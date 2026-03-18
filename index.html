@@ -3,104 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Zahid'in Arşivi ♡</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <title>nehir ♡</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💗</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     
     <style>
         :root {
-            --pink-light: #ffebf2;
+            --pink-bg: #fff5f8;
             --pink-main: #ff85a2;
             --pink-dark: #f06292;
             --white: #ffffff;
+            --shadow: 0 8px 20px rgba(255, 133, 162, 0.15);
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--pink-light); font-family: 'Poppins', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        body { background-color: var(--pink-bg); font-family: 'Poppins', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; color: #444; }
 
-        /* --- GİRİŞ --- */
-        #login-overlay { position: fixed; inset: 0; background: var(--pink-light); display: flex; justify-content: center; align-items: center; z-index: 10000; }
-        .login-box { background: white; padding: 25px; border-radius: 25px; text-align: center; width: 85%; max-width: 300px; border: 2px solid var(--pink-main); }
+        /* --- MODERN INPUT TASARIMI --- */
+        input, select {
+            width: 100%;
+            padding: 14px 20px;
+            margin: 10px 0;
+            border-radius: 18px;
+            border: 2px solid #ffeef2;
+            background: #fff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+        input:focus, select:focus {
+            border-color: var(--pink-main);
+            box-shadow: 0 0 10px rgba(255, 133, 162, 0.2);
+        }
+
+        button {
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* --- GİRİŞ EKRANI --- */
+        #login-overlay {
+            position: fixed; inset: 0; background: var(--pink-bg);
+            display: flex; justify-content: center; align-items: center; z-index: 10000;
+        }
+        .login-box {
+            background: white; padding: 40px 30px; border-radius: 35px;
+            text-align: center; width: 85%; max-width: 350px;
+            box-shadow: var(--shadow); border: 2px solid white;
+        }
+        .login-box h3 { color: var(--pink-dark); margin: 0 0 20px 0; font-size: 22px; }
+        .btn-primary {
+            background: var(--pink-main); color: white; border: none;
+            padding: 15px; width: 100%; border-radius: 18px; font-weight: 600; font-size: 16px;
+        }
 
         /* --- ANA İÇERİK --- */
-        #main-content { display: none; width: 100%; padding: 15px; flex-direction: column; align-items: center; }
-        .tabs { position: sticky; top: 10px; z-index: 100; display: flex; gap: 8px; margin-bottom: 20px; }
-        .tab-btn { background: white; border: 2px solid var(--pink-main); padding: 10px 18px; border-radius: 50px; font-weight: 600; color: var(--pink-dark); font-size: 13px; cursor: pointer; }
-        .tab-btn.active { background: var(--pink-main); color: white; }
-
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; max-width: 800px; }
-        @media (min-width: 768px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-
-        /* --- HAVALI SES KARTI --- */
-        .card { background: white; border-radius: 20px; padding: 15px; box-shadow: 0 4px 15px rgba(255, 133, 162, 0.1); position: relative; border: 1px solid #fff; transition: 0.3s; }
-        .card:hover { transform: translateY(-3px); border-color: var(--pink-main); }
-        .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 15px; margin-bottom: 10px; cursor: pointer; }
-        .card p { font-size: 13px; font-weight: 600; margin: 8px 0; color: var(--pink-dark); }
-
-        /* --- ÖZEL SES OYNATICI (CUSTOM PLAYER) --- */
-        .custom-player { background: var(--pink-light); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 5px; }
-        .player-controls { display: flex; align-items: center; gap: 10px; }
-        .play-btn { background: var(--pink-main); border: none; border-radius: 50%; width: 30px; height: 30px; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; }
-        
-        .seek-slider { 
-            flex: 1; -webkit-appearance: none; background: #fff; height: 6px; border-radius: 5px; outline: none; 
-            cursor: pointer;
+        #main-content { display: none; width: 100%; padding: 20px; flex-direction: column; align-items: center; }
+        .tabs { position: sticky; top: 15px; z-index: 100; display: flex; gap: 10px; margin-bottom: 30px; }
+        .tab-btn {
+            background: white; border: 2px solid white; padding: 12px 25px;
+            border-radius: 50px; font-weight: 600; color: var(--pink-dark);
+            box-shadow: var(--shadow);
         }
-        .seek-slider::-webkit-slider-thumb { 
-            -webkit-appearance: none; width: 14px; height: 14px; background: var(--pink-dark); border-radius: 50%; border: 2px solid white; 
+        .tab-btn.active { background: var(--pink-main); color: white; border-color: var(--pink-main); }
+
+        /* --- DİKEY SES LİSTESİ --- */
+        #ses-grid {
+            display: flex; flex-direction: column; /* Yan yana değil alt alta */
+            gap: 15px; width: 100%; max-width: 600px;
+        }
+        #ss-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; max-width: 800px;
         }
 
-        .time { font-size: 10px; color: var(--pink-dark); font-weight: 600; }
+        .card {
+            background: white; border-radius: 25px; padding: 20px;
+            box-shadow: var(--shadow); position: relative; border: 1px solid #fff;
+        }
+        .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 20px; }
+        .card p { font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--pink-dark); }
 
-        .delete-btn { position: absolute; top: -5px; right: -5px; background: var(--pink-dark); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 12px; display: none; z-index: 20; border: 2px solid white; }
+        /* --- GELİŞMİŞ SES OYNATICI --- */
+        .custom-player { background: #fffafb; border-radius: 20px; padding: 15px; border: 1px solid #ffebf2; }
+        .player-controls { display: flex; align-items: center; gap: 15px; }
+        .play-btn {
+            background: var(--pink-main); border: none; border-radius: 50%;
+            width: 45px; height: 45px; color: white; font-size: 18px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .seek-slider {
+            flex: 1; -webkit-appearance: none; background: #eee; height: 10px; border-radius: 10px;
+        }
+        .seek-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 22px; height: 22px; background: var(--pink-main);
+            border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-        /* --- ADMIN --- */
-        #admin-panel { display: none; width: 95%; max-width: 400px; background: white; padding: 20px; border-radius: 20px; margin-top: 30px; border: 2px dashed var(--pink-main); text-align: center; }
-        #admin-panel input, #admin-panel select { width: 100%; margin: 5px 0; padding: 10px; border-radius: 10px; border: 1px solid #eee; }
+        /* --- ÖZEL SİLME MODALI --- */
+        #confirm-modal {
+            position: fixed; inset: 0; background: rgba(255, 133, 162, 0.4);
+            display: none; justify-content: center; align-items: center; z-index: 20000; backdrop-filter: blur(5px);
+        }
+        .modal-box {
+            background: white; padding: 30px; border-radius: 30px; text-align: center;
+            width: 80%; max-width: 300px; box-shadow: var(--shadow);
+        }
 
-        #toast { position: fixed; bottom: 20px; background: var(--pink-dark); color: white; padding: 10px 20px; border-radius: 20px; font-size: 12px; display: none; z-index: 11000; }
+        /* --- ADMIN PANEL --- */
+        #admin-panel {
+            display: none; width: 95%; max-width: 450px; background: white;
+            padding: 30px; border-radius: 35px; margin-top: 40px; box-shadow: var(--shadow);
+        }
+
         .heart { position: fixed; color: var(--pink-main); pointer-events: none; z-index: -1; animation: fly 4s linear; }
         @keyframes fly { from { transform: translateY(100vh); opacity: 1; } to { transform: translateY(-10vh); opacity: 0; } }
     </style>
 </head>
 <body>
 
-    <div id="toast"></div>
+    <div id="confirm-modal">
+        <div class="modal-box">
+            <p style="font-weight:600; color:var(--pink-dark);">Bu içeriği silmek istediğine emin misin? ♡</p>
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button onclick="closeModal()" style="flex:1; padding:12px; border-radius:15px; border:none; background:#eee;">Vazgeç</button>
+                <button id="confirm-delete-btn" style="flex:1; padding:12px; border-radius:15px; border:none; background:var(--pink-main); color:white;">Evet, Sil</button>
+            </div>
+        </div>
+    </div>
 
     <div id="login-overlay">
         <div class="login-box">
-            <h3 style="color: var(--pink-dark);">Hoş Geldin ♡</h3>
-            <input type="password" id="pass" placeholder="Şifre...">
-            <button onclick="check()" style="background:var(--pink-main); color:white; border:none; padding:12px; width:100%; border-radius:12px; font-weight:600; cursor:pointer;">GİRİŞ</button>
+            <h3>Arşiv Girişi ♡</h3>
+            <input type="password" id="pass" placeholder="Şifre (yesbe / nehir)">
+            <button class="btn-primary" onclick="check()">GİRİŞ YAP</button>
         </div>
     </div>
 
     <div id="main-content">
-        <h2 style="color: var(--pink-dark);">zahid.life ♡</h2>
+        <h2 style="color: var(--pink-dark); letter-spacing: 1px;">zahid.life</h2>
 
         <div class="tabs">
             <button class="tab-btn active" onclick="tab('ses', this)">🎵 SESLER</button>
             <button class="tab-btn" onclick="tab('ss', this)">📸 SS'LER</button>
         </div>
 
-        <div id="ses-grid" class="grid area"></div>
-        <div id="ss-grid" class="grid area" style="display:none;"></div>
+        <div id="ses-grid" class="area"></div>
+        <div id="ss-grid" class="area" style="display:none;"></div>
 
         <div id="admin-panel">
-            <p style="font-weight:600; color:var(--pink-dark); margin-bottom:10px;">✨ İçerik Ekle (Admin: Nehir)</p>
-            <input type="text" id="name" placeholder="Başlık">
-            <input type="text" id="link" placeholder="Discord Ses/Resim Linki">
+            <p style="font-weight:600; color:var(--pink-dark); margin-bottom:15px; text-align:center;">✨ Yeni İçerik Ekle</p>
+            <input type="text" id="name" placeholder="Başlık Yazın">
+            <input type="text" id="link" placeholder="Discord Linkini Yapıştırın">
             <select id="type">
-                <option value="ses">Ses Kaydı</option>
-                <option value="ss">SS / Resim</option>
+                <option value="ses">Ses Kaydı Olarak Ekle</option>
+                <option value="ss">Resim / SS Olarak Ekle</option>
             </select>
-            <button onclick="save()" style="background:var(--pink-dark); color:white; border:none; padding:12px; width:100%; border-radius:10px; margin-top:10px; cursor:pointer;">Kaydet ♡</button>
+            <button class="btn-primary" onclick="save()" style="margin-top:10px;">Buluta Gönder ♡</button>
         </div>
     </div>
 
     <script>
-        // FIREBASE CONFIG BURAYA
+        // FIREBASE CONFIG BURAYA GELECEK
         const firebaseConfig = {
   apiKey: "AIzaSyBr3pYSUGjFyoLNXz3OS9mluBEriCCxyCw",
   authDomain: "ses-efcb4.firebaseapp.com",
@@ -115,8 +182,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         let isAdmin = false;
-
-        function msg(t) { const x = document.getElementById('toast'); x.innerText = t; x.style.display = 'block'; setTimeout(() => x.style.display = 'none', 3000); }
+        let deleteTargetKey = null;
 
         function check() {
             const p = document.getElementById('pass').value.toLowerCase().trim();
@@ -125,25 +191,41 @@
                 document.getElementById('main-content').style.display = 'flex';
                 if(p === "nehir") { isAdmin = true; document.getElementById('admin-panel').style.display = 'block'; }
                 load(); setInterval(heart, 800);
-            } else { msg("Hatalı şifre! ♡"); }
+            }
         }
 
         function tab(id, b) {
             document.querySelectorAll('.area').forEach(a => a.style.display = 'none');
             document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-            document.getElementById(id + '-grid').style.display = 'grid';
+            document.getElementById(id + '-grid').style.display = id === 'ses' ? 'flex' : 'grid';
             b.classList.add('active');
         }
 
-        function save() {
-            const n = document.getElementById('name').value; const l = document.getElementById('link').value; const t = document.getElementById('type').value;
-            if(!n || !l) return msg("Boş bırakma! ♡");
-            db.ref('arsiv').push({ n, l, t });
-            msg("Buluta eklendi! ♡");
-            document.getElementById('name').value = ""; document.getElementById('link').value = "";
+        function openDeleteModal(key) {
+            deleteTargetKey = key;
+            document.getElementById('confirm-modal').style.display = 'flex';
         }
 
-        function remove(k) { if(confirm("Silinsin mi? ♡")) db.ref('arsiv').child(k).remove().then(() => msg("Silindi!")); }
+        function closeModal() {
+            document.getElementById('confirm-modal').style.display = 'none';
+        }
+
+        document.getElementById('confirm-delete-btn').onclick = () => {
+            if(deleteTargetKey) {
+                db.ref('arsiv').child(deleteTargetKey).remove();
+                closeModal();
+            }
+        };
+
+        function save() {
+            const n = document.getElementById('name').value;
+            const l = document.getElementById('link').value;
+            const t = document.getElementById('type').value;
+            if(n && l) {
+                db.ref('arsiv').push({ n, l, t });
+                document.getElementById('name').value = ""; document.getElementById('link').value = "";
+            }
+        }
 
         function load() {
             db.ref('arsiv').on('value', s => {
@@ -152,72 +234,58 @@
                 s.forEach(c => {
                     const d = c.val(); const k = c.key;
                     const card = document.createElement('div'); card.className = 'card';
-                    const del = isAdmin ? `<button class="delete-btn" style="display:flex" onclick="remove('${k}')">X</button>` : '';
+                    const del = isAdmin ? `<button onclick="openDeleteModal('${k}')" style="position:absolute; top:10px; right:10px; background:var(--pink-main); color:white; border:none; width:28px; height:28px; border-radius:50%; font-size:12px;">X</button>` : '';
 
                     if(d.t === 'ss') {
-                        card.innerHTML = `${del}<img src="${d.l}" onclick="window.open('${d.l}')"><p>♡ ${d.n}</p>`;
+                        card.innerHTML = `${del}<img src="${d.l}" onclick="window.open('${d.l}')"><p style="margin-top:10px">♡ ${d.n}</p>`;
                         ss.appendChild(card);
                     } else {
-                        // ÖZEL SES OYNATICI TASARIMI
                         card.innerHTML = `
-                            ${del}
-                            <p>♡ ${d.n}</p>
+                            ${del}<p>♡ ${d.n}</p>
                             <div class="custom-player">
                                 <audio id="audio-${k}" src="${d.l}"></audio>
                                 <div class="player-controls">
                                     <button class="play-btn" id="btn-${k}" onclick="togglePlay('${k}')">▶</button>
-                                    <input type="range" class="seek-slider" id="seek-${k}" value="0" max="100" oninput="seekAudio('${k}')">
+                                    <input type="range" class="seek-slider" id="seek-${k}" value="0" step="0.1" oninput="seekAudio('${k}')">
                                 </div>
-                                <div style="display:flex; justify-content:space-between; width:100%">
-                                    <span class="time" id="cur-${k}">0:00</span>
-                                    <span class="time" id="dur-${k}">0:00</span>
+                                <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:11px; font-weight:600; color:var(--pink-dark);">
+                                    <span id="cur-${k}">0:00</span><span id="dur-${k}">0:00</span>
                                 </div>
-                            </div>
-                        `;
+                            </div>`;
                         ses.appendChild(card);
-                        setupAudioListeners(k);
+                        setupAudio(k);
                     }
                 });
             });
         }
 
-        // --- SES KONTROL MANTIĞI ---
         function togglePlay(k) {
-            const a = document.getElementById('audio-' + k);
-            const b = document.getElementById('btn-' + k);
+            const a = document.getElementById('audio-' + k); const b = document.getElementById('btn-' + k);
             if(a.paused) { a.play(); b.innerText = "||"; } else { a.pause(); b.innerText = "▶"; }
         }
 
-        function setupAudioListeners(k) {
-            const a = document.getElementById('audio-' + k);
-            const s = document.getElementById('seek-' + k);
-            const cur = document.getElementById('cur-' + k);
-            const dur = document.getElementById('dur-' + k);
-
-            a.onloadedmetadata = () => { dur.innerText = formatTime(a.duration); };
+        function setupAudio(k) {
+            const a = document.getElementById('audio-' + k); const s = document.getElementById('seek-' + k);
+            a.onloadedmetadata = () => document.getElementById('dur-' + k).innerText = format(a.duration);
             a.ontimeupdate = () => {
-                s.value = (a.currentTime / a.duration) * 100;
-                cur.innerText = formatTime(a.currentTime);
+                if(!s.dragging) { s.value = (a.currentTime / a.duration) * 100; document.getElementById('cur-' + k).innerText = format(a.currentTime); }
             };
-            a.onended = () => { document.getElementById('btn-' + k).innerText = "▶"; s.value = 0; };
         }
 
         function seekAudio(k) {
-            const a = document.getElementById('audio-' + k);
-            const s = document.getElementById('seek-' + k);
+            const a = document.getElementById('audio-' + k); const s = document.getElementById('seek-' + k);
             a.currentTime = (s.value / 100) * a.duration;
         }
 
-        function formatTime(sec) {
-            let m = Math.floor(sec / 60);
-            let s = Math.floor(sec % 60);
+        function format(sec) {
+            let m = Math.floor(sec / 60); let s = Math.floor(sec % 60);
             return m + ":" + (s < 10 ? "0" + s : s);
         }
 
         function heart() {
-            const h = document.createElement('div'); h.className = 'heart'; h.innerHTML = '❤';
-            h.style.left = Math.random() * 100 + 'vw'; document.body.appendChild(h);
-            setTimeout(() => h.remove(), 4000);
+            const h = document.createElement('div'); h.className = 'heart'; h.innerHTML = '💗';
+            h.style.left = Math.random() * 100 + 'vw'; h.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            document.body.appendChild(h); setTimeout(() => h.remove(), 4000);
         }
     </script>
 </body>
