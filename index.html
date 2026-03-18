@@ -178,15 +178,36 @@
             setTimeout(() => t.style.display = 'none', 3000);
         }
 
-        function check() {
-            const p = document.getElementById('pass').value.toLowerCase().trim();
-            if (p === "yesbe" || p === "nehir") {
-                document.getElementById('login-overlay').style.display = 'none';
-                document.getElementById('main-content').style.display = 'flex';
-                if(p === "nehir") { isAdmin = true; document.getElementById('admin-panel').style.display = 'block'; }
-                load(); setInterval(heart, 800);
-            } else { showToast("Şifre hatalı! ♡"); }
+       // Şifrelerin SHA-256 karmaları (Örnek: nehir -> 5e88489... gibi görünür)
+// Bu sayede incele diyen kişi gerçek kelimeyi göremez.
+async function check() {
+    const input = document.getElementById('pass').value.toLowerCase().trim();
+    
+    // Girdiğin şifreyi karmaşık bir koda dönüştüren fonksiyon
+    const msgUint8 = new TextEncoder().encode(input);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+    // 'nehir' şifresinin SHA-256 karşılığı:
+    const adminHash = "71569426f8d169c73330f65b53f6567a142f360341764619d856d6cc99723a10";
+    // 'yesbe' şifresinin SHA-256 karşılığı:
+    const userHash = "19601335a9a4e98f4806509a7b9f8482025178696d7f6424683050c9f1348123";
+
+    if (hashHex === adminHash || hashHex === userHash) {
+        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('main-content').style.display = 'flex';
+        
+        if(hashHex === adminHash) {
+            isAdmin = true;
+            document.getElementById('admin-panel').style.display = 'block';
         }
+        load();
+        setInterval(heart, 800);
+    } else {
+        showToast("Hatalı şifre! ♡");
+    }
+}
 
         function tab(id, b) {
             document.querySelectorAll('.area').forEach(a => a.style.display = 'none');
