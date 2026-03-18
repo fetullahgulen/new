@@ -120,12 +120,15 @@
         const db = firebase.database();
 
         function login() {
-            if (document.getElementById('pass').value === "yesbe") {
-                document.getElementById('login-overlay').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                loadData();
-            } else { alert("Hatalı!"); }
-        }
+    const girilenSifre = document.getElementById('pass').value.toLowerCase().trim();
+    if (girilenSifre === "yesbe") {
+        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+        loadData(); // Firebase'den verileri çeker
+    } else { 
+        alert("Hatalı şifre! Tekrar dene ♡"); 
+    }
+}
 
         function saveToFirebase() {
             const name = document.getElementById('name').value;
@@ -161,12 +164,15 @@
         const db = firebase.database();
 
         function login() {
-            if (document.getElementById('pass').value === "yesbe") {
-                document.getElementById('login-overlay').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                loadData();
-            } else { alert("Hatalı!"); }
-        }
+    const girilenSifre = document.getElementById('pass').value.toLowerCase().trim();
+    if (girilenSifre === "yesbe") {
+        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+        loadData(); // Firebase'den verileri çeker
+    } else { 
+        alert("Hatalı şifre! Tekrar dene ♡"); 
+    }
+}
 
         function saveToFirebase() {
             const name = document.getElementById('name').value;
