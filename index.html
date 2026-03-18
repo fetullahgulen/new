@@ -124,14 +124,14 @@
 
     <div id="login-overlay">
         <div class="login-box">
-            <h3>Hoş Geldin ♡</h3>
+            <h3> ♡</h3>
             <input type="password" id="pass" placeholder="Şifre...">
             <button class="btn-primary" onclick="check()">GİRİŞ</button>
         </div>
     </div>
 
     <div id="main-content">
-        <h2 style="color: var(--pink-dark); margin-bottom:5px;">zahid.life</h2>
+        <h2 style="color: var(--pink-dark); margin-bottom:5px;">nehir ve zahid'in gizli dosyaları</h2>
         <p style="font-size:12px; color:var(--pink-main); margin-bottom:20px;">senin için topladığım anılar ♡</p>
 
         <div class="tabs">
@@ -255,8 +255,8 @@
                 
                 if ('mediaSession' in navigator) {
                     navigator.mediaSession.metadata = new MediaMetadata({
-                        title: name, artist: "Zahid'in Arşivi",
-                        artwork: [{ src: 'https://i.imgur.com/8n9v9Xq.png', sizes: '512x512', type: 'image/png' }]
+                        title: name, artist: "",
+                        artwork: [{ src: 'https://cdn.discordapp.com/avatars/1275159983318630513/a2c37b11570db827f22acd3ea6bc4bda.png?size=1024', sizes: '512x512', type: 'image/png' }]
                     });
                 }
             } else { a.pause(); b.innerText = "▶"; }
