@@ -2,28 +2,108 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Zahid | Audio Stream</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zahid'in Günlüğü ♡</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
     <style>
-        body { background: #050505; color: #00ff88; font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .node { border: 1px solid #00ff88; padding: 40px; background: #0a0a0a; box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); border-radius: 8px; width: 350px; text-align: center; }
-        h1 { font-size: 14px; letter-spacing: 4px; margin-bottom: 30px; }
-        audio { 
-            width: 100%; 
-            filter: invert(1) hue-rotate(80deg) brightness(1.5); /* Siyah temaya uydurur */
+        :root {
+            --pink-light: #ffdeeb;
+            --pink-main: #ff85a2;
+            --pink-dark: #f06292;
+            --white: #ffffff;
         }
-        .status { margin-top: 20px; font-size: 10px; color: #333; }
+
+        body {
+            background-color: var(--pink-light);
+            background-image: radial-gradient(#ffb6c1 1px, transparent 1px);
+            background-size: 20px 20px; /* Arka plan pütürlü tatlı bir doku */
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 { color: var(--pink-dark); text-shadow: 2px 2px var(--white); margin-bottom: 10px; }
+        .heart-icon { color: var(--pink-main); font-size: 24px; }
+
+        .category-title {
+            width: 100%;
+            max-width: 600px;
+            margin: 30px 0 15px;
+            color: var(--pink-dark);
+            border-bottom: 2px dashed var(--pink-main);
+            padding-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .audio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .audio-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(255, 133, 162, 0.2);
+            border: 2px solid var(--white);
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .audio-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--pink-main);
+        }
+
+        .audio-card h3 {
+            margin: 0 0 15px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        audio {
+            width: 100%;
+            height: 35px;
+            border-radius: 10px;
+        }
+
+        /* Oynatıcıyı pembe tonlara uydurma */
+        audio::-webkit-media-controls-enclosure {
+            background-color: var(--pink-light);
+        }
+
+        .footer { margin-top: 50px; font-size: 12px; color: var(--pink-main); }
     </style>
 </head>
 <body>
-    <div class="node">
-        <h1>AUDIO_STREAM_01</h1>
-        
-        <audio controls preload="metadata">
-            <source src="https://cdn.discordapp.com/attachments/1452263960219877500/1483757211325825074/voice-message.ogg?ex=69bbc016&is=69ba6e96&hm=bc629e3428c205f993e15c345e83a241911e21288c0293e6aa30db0eb64bcceb&" type="audio/mp4">
-            Tarayıcı hatası!
-        </audio>
 
-        <div class="status">CONNECTED: zahid.life // v1.0</div>
+    <span class="heart-icon">💖</span>
+    <h1>zahid.life</h1>
+    <p style="color: #888; font-size: 13px;">Sesli Notlar Arşivi</p>
+
+    <div class="category-title">♡ Günlük Notlar</div>
+    <div class="audio-grid">
+        <div class="audio-card">
+            <h3>uykulu nehir</h3>
+            <audio controls preload="metadata">
+                <source src="https://cdn.discordapp.com/attachments/1452263960219877500/1483757211325825074/voice-message.ogg?ex=69bbc016&is=69ba6e96&hm=bc629e3428c205f993e15c345e83a241911e21288c0293e6aa30db0eb64bcceb&" type="audio/mp4">
+            </audio>
+        </div>
+        <div class="audio-card">
+            <h3>kaydı kapat!</h3>
+            <audio controls preload="metadata">
+                <source src="https://cdn.discordapp.com/attachments/1452263960219877500/1483758661762420807/voice-message.ogg?ex=69bbc16f&is=69ba6fef&hm=ff56b0ed64ac7a52ffcb6aec1ae82dbd4c50799dae929d6a30b8cec27414fe5b&" type="audio/mp4">
+            </audio>
+        </div>
     </div>
+
+    <div class="footer">Made with ♡ by Zahid</div>
+
 </body>
 </html>
