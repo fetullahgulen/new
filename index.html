@@ -2,65 +2,28 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Zahid | Custom Audio Player</title>
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    <title>Zahid | Audio Stream</title>
     <style>
-        :root {
-            /* BURADAN İSTEDİĞİN RENGİ DEĞİŞTİREBİLİRSİN */
-            --plyr-color-main: #00ff88; 
-            --bg-color: #050505;
+        body { background: #050505; color: #00ff88; font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .node { border: 1px solid #00ff88; padding: 40px; background: #0a0a0a; box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); border-radius: 8px; width: 350px; text-align: center; }
+        h1 { font-size: 14px; letter-spacing: 4px; margin-bottom: 30px; }
+        audio { 
+            width: 100%; 
+            filter: invert(1) hue-rotate(80deg) brightness(1.5); /* Siyah temaya uydurur */
         }
-
-        body {
-            background-color: var(--bg-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .player-container {
-            width: 400px;
-            padding: 30px;
-            background: #111;
-            border: 1px solid #222;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.1);
-        }
-
-        h2 {
-            color: var(--plyr-color-main);
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        /* Plyr Oynatıcıyı Karanlık Yapma */
-        .plyr--audio .plyr__controls {
-            background: transparent !important;
-            color: #fff !important;
-        }
+        .status { margin-top: 20px; font-size: 10px; color: #333; }
     </style>
 </head>
 <body>
-
-    <div class="player-container">
-        <h2>System_Audio_Node</h2>
+    <div class="node">
+        <h1>AUDIO_STREAM_01</h1>
         
-        <audio id="player" controls>
-            <source src="https://docs.google.com/uc?export=download&id=1IqiSnzX1FBrigtLSBRNdfcHpnx_FKVLk" type="audio/mp4" />
+        <audio controls preload="metadata">
+            <source src="https://cdn.discordapp.com/attachments/1452263960219877500/1483757211325825074/voice-message.ogg?ex=69bbc016&is=69ba6e96&hm=bc629e3428c205f993e15c345e83a241911e21288c0293e6aa30db0eb64bcceb&" type="audio/mp4">
+            Tarayıcı hatası!
         </audio>
-    </div>
 
-    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
-    <script>
-        const player = new Plyr('#player', {
-            tooltips: { controls: true, seek: true }
-        });
-    </script>
+        <div class="status">CONNECTED: zahid.life // v1.0</div>
+    </div>
 </body>
 </html>
