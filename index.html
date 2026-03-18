@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>nehir♡</title>
+    <title>nehir ♡ zahid</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💗</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -14,28 +14,23 @@
             --pink-bg: #fff5f8;
             --pink-main: #ff85a2;
             --pink-dark: #f06292;
-            --white: #ffffff;
             --shadow: 0 10px 25px rgba(255, 133, 162, 0.15);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body { background-color: var(--pink-bg); font-family: 'Poppins', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; color: #444; }
 
-        /* --- MODERN GİRİŞ VE PANEL KUTULARI --- */
         input, select {
             width: 100%; padding: 15px; margin: 10px 0; border-radius: 20px;
             border: 2px solid #ffeef2; background: #fff; font-family: 'Poppins', sans-serif;
             font-size: 15px; transition: 0.3s;
         }
-        input:focus { border-color: var(--pink-main); box-shadow: 0 0 12px rgba(255, 133, 162, 0.1); }
 
         .btn-primary {
             background: var(--pink-main); color: white; border: none;
-            padding: 16px; width: 100%; border-radius: 20px; font-weight: 600; font-size: 16px; cursor: pointer; transition: 0.3s;
+            padding: 16px; width: 100%; border-radius: 20px; font-weight: 600; font-size: 16px; cursor: pointer;
         }
-        .btn-primary:active { transform: scale(0.98); }
 
-        /* --- GİRİŞ EKRANI --- */
         #login-overlay {
             position: fixed; inset: 0; background: var(--pink-bg);
             display: flex; justify-content: center; align-items: center; z-index: 10000;
@@ -45,7 +40,6 @@
             text-align: center; width: 85%; max-width: 350px; box-shadow: var(--shadow);
         }
 
-        /* --- ANA İÇERİK --- */
         #main-content { display: none; width: 100%; padding: 20px; flex-direction: column; align-items: center; }
         .tabs { position: sticky; top: 15px; z-index: 100; display: flex; gap: 10px; margin-bottom: 30px; }
         .tab-btn {
@@ -55,7 +49,6 @@
         }
         .tab-btn.active { background: var(--pink-main); color: white; }
 
-        /* --- LİSTE YAPISI --- */
         #ses-grid { display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 500px; }
         #ss-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; max-width: 800px; }
 
@@ -66,7 +59,6 @@
         .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 22px; cursor: pointer; }
         .card p { font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--pink-dark); text-align: center; }
 
-        /* --- MODERN SES OYNATICI --- */
         .custom-player { background: #fffafb; border-radius: 22px; padding: 15px; border: 1px solid #ffebf2; }
         .player-controls { display: flex; align-items: center; gap: 15px; }
         .play-btn {
@@ -74,35 +66,20 @@
             width: 50px; height: 50px; color: white; font-size: 20px;
             display: flex; align-items: center; justify-content: center; cursor: pointer;
         }
-        .seek-slider {
-            flex: 1; -webkit-appearance: none; background: #eee; height: 10px; border-radius: 10px; cursor: pointer;
-        }
+        .seek-slider { flex: 1; -webkit-appearance: none; background: #eee; height: 10px; border-radius: 10px; cursor: pointer; }
         .seek-slider::-webkit-slider-thumb {
             -webkit-appearance: none; width: 24px; height: 24px; background: var(--pink-main);
             border-radius: 50%; border: 4px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         }
 
-        /* --- SİLME MODALI --- */
         #confirm-modal {
             position: fixed; inset: 0; background: rgba(255, 133, 162, 0.3);
             display: none; justify-content: center; align-items: center; z-index: 20000; backdrop-filter: blur(8px);
         }
-        .modal-box {
-            background: white; padding: 30px; border-radius: 35px; text-align: center;
-            width: 80%; max-width: 320px; box-shadow: var(--shadow);
-        }
+        .modal-box { background: white; padding: 30px; border-radius: 35px; text-align: center; width: 80%; max-width: 320px; box-shadow: var(--shadow); }
 
-        /* --- ADMIN PANEL --- */
-        #admin-panel {
-            display: none; width: 95%; max-width: 450px; background: white;
-            padding: 30px; border-radius: 35px; margin-top: 40px; box-shadow: var(--shadow);
-        }
-
-        #toast {
-            position: fixed; bottom: 30px; background: var(--pink-dark); color: white;
-            padding: 12px 25px; border-radius: 50px; font-size: 13px; display: none; z-index: 15000;
-        }
-
+        #admin-panel { display: none; width: 95%; max-width: 450px; background: white; padding: 30px; border-radius: 35px; margin-top: 40px; box-shadow: var(--shadow); }
+        #toast { position: fixed; bottom: 30px; background: var(--pink-dark); color: white; padding: 12px 25px; border-radius: 50px; font-size: 13px; display: none; z-index: 15000; }
         .heart { position: fixed; color: var(--pink-main); pointer-events: none; z-index: -1; animation: fly 4s linear; }
         @keyframes fly { from { transform: translateY(100vh); opacity: 1; } to { transform: translateY(-10vh); opacity: 0; } }
     </style>
@@ -114,7 +91,6 @@
     <div id="confirm-modal">
         <div class="modal-box">
             <p style="font-weight:600; color:var(--pink-dark); font-size:18px;">Emin misin? ♡</p>
-            <p style="font-size:13px; color:#888;">Bu içerik kalıcı olarak silinecek.</p>
             <div style="display:flex; gap:12px; margin-top:25px;">
                 <button onclick="closeModal()" style="flex:1; padding:14px; border-radius:18px; border:none; background:#f0f0f0; font-weight:600;">İptal</button>
                 <button id="confirm-delete-btn" style="flex:1; padding:14px; border-radius:18px; border:none; background:var(--pink-main); color:white; font-weight:600;">Sil</button>
@@ -124,15 +100,15 @@
 
     <div id="login-overlay">
         <div class="login-box">
-            <h3> ♡</h3>
+            <h3>Hoş Geldin ♡</h3>
             <input type="password" id="pass" placeholder="Şifre...">
-            <button class="btn-primary" onclick="check()">GİRİŞ</button>
+            <button class="btn-primary" onclick="check()"></button>
         </div>
     </div>
 
     <div id="main-content">
-        <h2 style="color: var(--pink-dark); margin-bottom:5px;">nehir ve zahid'in gizli dosyaları</h2>
-        <p style="font-size:12px; color:var(--pink-main); margin-bottom:20px;"> ♡</p>
+        <h2 style="color: var(--pink-dark); margin-bottom:5px;"></h2>
+        <p style="font-size:12px; color:var(--pink-main); margin-bottom:20px;">♡</p>
 
         <div class="tabs">
             <button class="tab-btn active" onclick="tab('ses', this)">🎵 SESLER</button>
@@ -150,12 +126,12 @@
                 <option value="ses">Ses Dosyası 🎵</option>
                 <option value="ss">Resim / SS 📸</option>
             </select>
-            <button class="btn-primary" onclick="save()" style="margin-top:10px;">Kaydet ♡</button>
+            <button class="btn-primary" onclick="save()">Kaydet ♡</button>
         </div>
     </div>
 
     <script>
-        // FIREBASE BİLGİLERİNİ BURAYA YAPIŞTIR
+        // FIREBASE CONFIG BURAYA GELECEK
         const firebaseConfig = {
   apiKey: "AIzaSyBr3pYSUGjFyoLNXz3OS9mluBEriCCxyCw",
   authDomain: "ses-efcb4.firebaseapp.com",
@@ -169,45 +145,40 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        
         let isAdmin = false;
         let deleteKey = null;
+
+        // ŞİFRE GİZLEME MANTIĞI (İncele kısmında kelime görünmez)
+        function check() {
+            const input = document.getElementById('pass').value.toLowerCase().trim();
+            const b = btoa(input); // Base64'e çevirir
+
+            // bmVoaXI= (nehir) | eWVzYmU= (yesbe)
+            if (b === "bmVoaXI=") { 
+                isAdmin = true;
+                loginSuccess();
+            } else if (b === "eWVzYmU=") {
+                isAdmin = false;
+                loginSuccess();
+            } else {
+                showToast("Şifre hatalı! ♡");
+            }
+        }
+
+        function loginSuccess() {
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            if(isAdmin) document.getElementById('admin-panel').style.display = 'block';
+            load();
+            setInterval(heart, 800);
+        }
 
         function showToast(m) {
             const t = document.getElementById('toast');
             t.innerText = m; t.style.display = 'block';
             setTimeout(() => t.style.display = 'none', 3000);
         }
-
-       // Şifrelerin SHA-256 karmaları (Örnek: nehir -> 5e88489... gibi görünür)
-// Bu sayede incele diyen kişi gerçek kelimeyi göremez.
-async function check() {
-    const input = document.getElementById('pass').value.toLowerCase().trim();
-    
-    // Girdiğin şifreyi karmaşık bir koda dönüştüren fonksiyon
-    const msgUint8 = new TextEncoder().encode(input);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-    // 'nehir' şifresinin SHA-256 karşılığı:
-    const adminHash = "71569426f8d169c73330f65b53f6567a142f360341764619d856d6cc99723a10";
-    // 'yesbe' şifresinin SHA-256 karşılığı:
-    const userHash = "19601335a9a4e98f4806509a7b9f8482025178696d7f6424683050c9f1348123";
-
-    if (hashHex === adminHash || hashHex === userHash) {
-        document.getElementById('login-overlay').style.display = 'none';
-        document.getElementById('main-content').style.display = 'flex';
-        
-        if(hashHex === adminHash) {
-            isAdmin = true;
-            document.getElementById('admin-panel').style.display = 'block';
-        }
-        load();
-        setInterval(heart, 800);
-    } else {
-        showToast("Hatalı şifre! ♡");
-    }
-}
 
         function tab(id, b) {
             document.querySelectorAll('.area').forEach(a => a.style.display = 'none');
@@ -241,24 +212,13 @@ async function check() {
                 s.forEach(c => {
                     const d = c.val(); const k = c.key;
                     const card = document.createElement('div'); card.className = 'card';
-                    const del = isAdmin ? `<button onclick="openDelete('${k}')" style="position:absolute; top:12px; right:12px; background:var(--pink-main); color:white; border:none; width:30px; height:30px; border-radius:50%; font-size:12px; cursor:pointer; z-index:10;">X</button>` : '';
+                    const del = isAdmin ? `<button onclick="openDelete('${k}')" style="position:absolute; top:12px; right:12px; background:var(--pink-main); color:white; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer; z-index:10;">X</button>` : '';
 
                     if(d.t === 'ss') {
                         card.innerHTML = `${del}<img src="${d.l}" onclick="window.open('${d.l}')"><p style="margin-top:10px">♡ ${d.n}</p>`;
                         ss.appendChild(card);
                     } else {
-                        card.innerHTML = `
-                            ${del}<p>♡ ${d.n}</p>
-                            <div class="custom-player">
-                                <audio id="audio-${k}" src="${d.l}"></audio>
-                                <div class="player-controls">
-                                    <button class="play-btn" id="btn-${k}" onclick="togglePlay('${k}', '${d.n}')">▶</button>
-                                    <input type="range" class="seek-slider" id="seek-${k}" value="0" step="0.1" oninput="seekAudio('${k}')">
-                                </div>
-                                <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:12px; font-weight:600; color:var(--pink-dark);">
-                                    <span id="cur-${k}">0:00</span><span id="dur-${k}">0:00</span>
-                                </div>
-                            </div>`;
+                        card.innerHTML = `${del}<p>♡ ${d.n}</p><div class="custom-player"><audio id="audio-${k}" src="${d.l}"></audio><div class="player-controls"><button class="play-btn" id="btn-${k}" onclick="togglePlay('${k}', '${d.n}')">▶</button><input type="range" class="seek-slider" id="seek-${k}" value="0" step="0.1" oninput="seekAudio('${k}')"></div><div style="display:flex; justify-content:space-between; margin-top:10px; font-size:12px; font-weight:600; color:var(--pink-dark);"><span id="cur-${k}">0:00</span><span id="dur-${k}">0:00</span></div></div>`;
                         ses.appendChild(card);
                         setupAudio(k);
                     }
@@ -266,14 +226,12 @@ async function check() {
             });
         }
 
-        // SPOTIFY KİLİT EKRANI VE OYNATMA
         function togglePlay(k, name) {
             const a = document.getElementById('audio-' + k); const b = document.getElementById('btn-' + k);
             if(a.paused) {
-                document.querySelectorAll('audio').forEach(el => { el.pause(); });
+                document.querySelectorAll('audio').forEach(el => el.pause());
                 document.querySelectorAll('.play-btn').forEach(el => el.innerText = "▶");
                 a.play(); b.innerText = "||";
-                
                 if ('mediaSession' in navigator) {
                     navigator.mediaSession.metadata = new MediaMetadata({
                         title: name, artist: "",
@@ -286,27 +244,12 @@ async function check() {
         function setupAudio(k) {
             const a = document.getElementById('audio-' + k); const s = document.getElementById('seek-' + k);
             a.onloadedmetadata = () => document.getElementById('dur-' + k).innerText = format(a.duration);
-            a.ontimeupdate = () => {
-                s.value = (a.currentTime / a.duration) * 100;
-                document.getElementById('cur-' + k).innerText = format(a.currentTime);
-            };
+            a.ontimeupdate = () => { s.value = (a.currentTime / a.duration) * 100; document.getElementById('cur-' + k).innerText = format(a.currentTime); };
         }
 
-        function seekAudio(k) {
-            const a = document.getElementById('audio-' + k); const s = document.getElementById('seek-' + k);
-            a.currentTime = (s.value / 100) * a.duration;
-        }
-
-        function format(sec) {
-            let m = Math.floor(sec / 60); let s = Math.floor(sec % 60);
-            return m + ":" + (s < 10 ? "0" + s : s);
-        }
-
-        function heart() {
-            const h = document.createElement('div'); h.className = 'heart'; h.innerHTML = '💗';
-            h.style.left = Math.random() * 100 + 'vw'; h.style.fontSize = (Math.random() * 20 + 15) + 'px';
-            document.body.appendChild(h); setTimeout(() => h.remove(), 4000);
-        }
+        function seekAudio(k) { const a = document.getElementById('audio-' + k); const s = document.getElementById('seek-' + k); a.currentTime = (s.value / 100) * a.duration; }
+        function format(sec) { let m = Math.floor(sec / 60); let s = Math.floor(sec % 60); return m + ":" + (s < 10 ? "0" + s : s); }
+        function heart() { const h = document.createElement('div'); h.className = 'heart'; h.innerHTML = '💗'; h.style.left = Math.random() * 100 + 'vw'; h.style.fontSize = (Math.random() * 20 + 15) + 'px'; document.body.appendChild(h); setTimeout(() => h.remove(), 4000); }
     </script>
 </body>
 </html>
