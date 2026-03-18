@@ -1,4 +1,102 @@
-<audio controls preload="none">
-    <source src="https://docs.google.com/uc?export=download&id=1gC1-2lCVLLp8bjueezRBUsoQ_ZnmQ26k" type="audio/mp4">
-    Tarayıcınız bu sesi desteklemiyor.
-</audio>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zahid | Audio Stream</title>
+    <style>
+        :root {
+            --bg: #0a0a0b;
+            --accent: #00ff88;
+            --panel: #141417;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .audio-node {
+            background: var(--panel);
+            padding: 30px;
+            border-radius: 4px;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 350px;
+            position: relative;
+        }
+
+        .header {
+            font-size: 10px;
+            color: var(--accent);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        h1 {
+            font-size: 16px;
+            margin: 0 0 25px 0;
+            font-weight: 400;
+        }
+
+        /* Standart oynatıcıyı karanlık temaya uydurma */
+        audio {
+            width: 100%;
+            height: 40px;
+            filter: invert(1) hue-rotate(85deg) brightness(1.2);
+            outline: none;
+        }
+
+        .info {
+            margin-top: 15px;
+            font-size: 9px;
+            color: #555;
+            text-align: right;
+        }
+
+        /* Yanıp sönen efekt (Live hissi) */
+        .live-dot {
+            height: 8px;
+            width: 8px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            display: inline-block;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="audio-node">
+        <div class="header">
+            <span>System Status: Online</span>
+            <span class="live-dot"></span>
+        </div>
+        
+        <h1>> PLAYBACK_NODE_01</h1>
+
+        <audio controls preload="metadata">
+            <source src="ses.m4a" type="audio/mp4">
+            Sistem hatası: Ses dosyası yüklenemedi.
+        </audio>
+
+        <div class="info">20MB_M4A_STREAM // zahid.life</div>
+    </div>
+
+</body>
+</html>
