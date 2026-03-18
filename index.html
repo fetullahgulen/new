@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Zahid'in Özel Arşivi ♡</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -25,12 +25,13 @@
             align-items: center;
             min-height: 100vh;
             overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- ŞİFRE EKRANI --- */
+        /* --- GİRİŞ EKRANI --- */
         #login-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            inset: 0;
             background: var(--pink-light);
             display: flex;
             justify-content: center;
@@ -41,11 +42,13 @@
 
         .login-box {
             background: white;
-            padding: 40px;
-            border-radius: 30px;
+            padding: 30px;
+            border-radius: 25px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(255, 133, 162, 0.3);
             border: 3px solid var(--pink-main);
+            width: 85%;
+            max-width: 320px;
         }
 
         .login-box input {
@@ -55,71 +58,97 @@
             outline: none;
             text-align: center;
             font-size: 16px;
-            width: 200px;
+            width: 90%;
+            margin-bottom: 10px;
         }
 
         .login-box button {
-            margin-top: 15px;
             background: var(--pink-main);
             color: white;
             border: none;
-            padding: 10px 30px;
+            padding: 12px 30px;
             border-radius: 15px;
             cursor: pointer;
             font-weight: 600;
+            width: 100%;
         }
 
-        /* --- ANA İÇERİK (BAŞTA GİZLİ) --- */
+        /* --- ANA İÇERİK --- */
         #main-content { display: none; width: 100%; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box; }
 
-        .tabs { margin: 20px 0; display: flex; gap: 15px; }
+        .tabs { margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
         .tab-btn {
             background: var(--white);
             border: 2px solid var(--pink-main);
-            padding: 10px 25px;
-            border-radius: 25px;
+            padding: 8px 20px;
+            border-radius: 20px;
             cursor: pointer;
             font-weight: 600;
             color: var(--pink-dark);
+            font-size: 14px;
         }
         .tab-btn.active { background: var(--pink-main); color: white; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 100%; max-width: 1000px; margin-top: 20px; }
-        .card { background: white; border-radius: 20px; padding: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; border: 2px solid transparent; transition: 0.3s; }
-        .card:hover { border-color: var(--pink-main); transform: translateY(-5px); }
-        .card img { width: 100%; border-radius: 15px; margin-bottom: 10px; }
-        audio { width: 100%; margin-top: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; width: 100%; max-width: 900px; margin-top: 10px; }
+        
+        /* Mobil Optimizasyon */
+        @media (min-width: 600px) {
+            .grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+        }
 
-        /* --- EKLEME FORMU --- */
-        .admin-panel {
+        .card { background: white; border-radius: 18px; padding: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; border: 2px solid transparent; }
+        .card img { width: 100%; border-radius: 12px; margin-bottom: 8px; display: block; }
+        audio { width: 100%; height: 35px; margin-top: 5px; }
+
+        /* --- EKLEME PANELİ (BAŞTA GİZLİ) --- */
+        #admin-panel {
+            display: none;
             background: white;
-            padding: 25px;
-            border-radius: 25px;
-            margin-top: 50px;
+            padding: 20px;
+            border-radius: 20px;
+            margin-top: 40px;
             border: 2px dashed var(--pink-main);
-            width: 90%; max-width: 500px;
+            width: 90%;
+            max-width: 450px;
             text-align: center;
         }
-        .admin-panel input, .admin-panel select { width: 80%; margin: 5px; padding: 10px; border-radius: 12px; border: 1px solid #ddd; outline: none; }
+        #admin-panel input, #admin-panel select { width: 90%; margin: 6px 0; padding: 10px; border-radius: 12px; border: 1px solid #ddd; outline: none; }
 
-        /* Uçan Kalpler */
-        .heart { position: fixed; color: var(--pink-main); font-size: 20px; z-index: -1; animation: moveUp 4s linear infinite; }
+        /* --- ÖZEL POPUP (TOAST) --- */
+        #toast {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--pink-dark);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 14px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: 0.5s;
+            z-index: 10000;
+            white-space: nowrap;
+        }
+
+        .heart { position: fixed; color: var(--pink-main); font-size: 18px; z-index: -1; animation: moveUp 4s linear infinite; pointer-events: none; }
         @keyframes moveUp { 0% { transform: translateY(100vh); opacity: 1; } 100% { transform: translateY(-10vh); opacity: 0; } }
     </style>
 </head>
 <body>
 
+    <div id="toast">Bildirim Mesajı ♡</div>
+
     <div id="login-overlay">
         <div class="login-box">
-            <h2 style="color: var(--pink-dark);">Hoş Geldin ♡</h2>
-            <input type="password" id="pass-input" placeholder="Şifre (yesbe)">
-            <br>
-            <button onclick="checkPass()">GİRİŞ YAP</button>
+            <h2 style="color: var(--pink-dark); margin-top:0;">Giriş ♡</h2>
+            <input type="password" id="pass-input" placeholder="Şifreniz...">
+            <button onclick="checkPass()">GİRİŞ</button>
         </div>
     </div>
 
     <div id="main-content">
-        <h1 style="color: var(--pink-dark); text-shadow: 2px 2px white;">zahid.life ♡</h1>
+        <h1 style="color: var(--pink-dark); font-size: 24px;">zahid.life ♡</h1>
 
         <div class="tabs">
             <button class="tab-btn active" onclick="showTab('ses-grid', this)">🎵 Sesler</button>
@@ -129,21 +158,20 @@
         <div id="ses-grid" class="grid section"></div>
         <div id="ss-grid" class="grid section" style="display:none;"></div>
 
-        <div class="admin-panel">
-            <h3 style="color: var(--pink-dark);">✨ Yeni Arşiv Ekle</h3>
-            <input type="text" id="item-name" placeholder="Başlık (Örn: Gece Kaydı)">
+        <div id="admin-panel">
+            <h3 style="color: var(--pink-dark); margin:0 0 10px 0;">✨ Yeni İçerik Ekle</h3>
+            <input type="text" id="item-name" placeholder="Başlık">
             <input type="text" id="item-link" placeholder="Discord Linki">
             <select id="item-type">
-                <option value="ses">Ses Dosyası 🎵</option>
-                <option value="ss">Ekran Görüntüsü 📸</option>
+                <option value="ses">Ses Kaydı 🎵</option>
+                <option value="ss">Görüntü 📸</option>
             </select>
-            <br>
-            <button onclick="saveToFirebase()" style="background: var(--pink-dark); margin-top: 10px;">Buluta Kaydet ♡</button>
+            <button onclick="saveToFirebase()" style="margin-top:10px;">Buluta Kaydet ♡</button>
         </div>
     </div>
 
     <script>
-        // --- FIREBASE AYARLARI (BURAYI KENDİ BİLGİLERİNLE DOLDUR) ---
+        // FIREBASE CONFIG (Firebase bilgilerini buraya yapıştır)
         const firebaseConfig = {
   apiKey: "AIzaSyBr3pYSUGjFyoLNXz3OS9mluBEriCCxyCw",
   authDomain: "ses-efcb4.firebaseapp.com",
@@ -159,23 +187,34 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Şifre Kontrolü
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.style.bottom = "30px";
+            setTimeout(() => { t.style.bottom = "-100px"; }, 3000);
+        }
+
         function checkPass() {
             const val = document.getElementById('pass-input').value.toLowerCase().trim();
-            if (val === "yesbe") {
+            if (val === "yesbe" || val === "nehir") {
                 document.getElementById('login-overlay').style.opacity = "0";
                 setTimeout(() => {
                     document.getElementById('login-overlay').style.display = "none";
                     document.getElementById('main-content').style.display = "flex";
+                    if (val === "nehir") {
+                        document.getElementById('admin-panel').style.display = "block";
+                        showToast("Hoş geldin Nehir! Düzenleme yetkisi aktif. ♡");
+                    } else {
+                        showToast("Hoş geldin! Arşiv açıldı. ♡");
+                    }
                     createHearts();
                     loadData();
                 }, 500);
             } else {
-                alert("Hatalı şifre! Tekrar dene ♡");
+                showToast("Hatalı şifre! Tekrar dene. ♡");
             }
         }
 
-        // Sekme Değiştirme
         function showTab(gridId, btn) {
             document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -183,22 +222,20 @@
             btn.classList.add('active');
         }
 
-        // Firebase'e Kaydet
         function saveToFirebase() {
             const name = document.getElementById('item-name').value;
             const link = document.getElementById('item-link').value;
             const type = document.getElementById('item-type').value;
 
-            if (!name || !link) return alert("Lütfen boş bırakma!");
+            if (!name || !link) return showToast("Lütfen boş bırakma! ♡");
 
             db.ref('arsiv').push({ name, link, type });
-            alert("Buluta eklendi! Herkes görebilecek. ♡");
+            showToast("Başarıyla buluta eklendi! ♡");
             
             document.getElementById('item-name').value = "";
             document.getElementById('item-link').value = "";
         }
 
-        // Verileri Canlı Çek
         function loadData() {
             db.ref('arsiv').on('value', (snapshot) => {
                 const sesGrid = document.getElementById('ses-grid');
@@ -209,8 +246,8 @@
                     const data = child.val();
                     const card = document.createElement('div');
                     card.className = 'card';
-                    card.innerHTML = `<p style="font-weight:600; color:#555;">♡ ${data.name}</p>
-                        ${data.type === 'ses' ? `<audio controls src="${data.link}"></audio>` : `<img src="${data.link}" alt="SS">`}`;
+                    card.innerHTML = `<p style="font-size:13px; font-weight:600; color:#de6a8a; margin:5px 0;">♡ ${data.name}</p>
+                        ${data.type === 'ses' ? `<audio controls src="${data.link}"></audio>` : `<img src="${data.link}">`}`;
                     
                     if (data.type === 'ses') sesGrid.appendChild(card);
                     else ssGrid.appendChild(card);
@@ -218,17 +255,15 @@
             });
         }
 
-        // Animasyon: Kalpler
         function createHearts() {
             setInterval(() => {
                 const h = document.createElement('div');
-                h.className = 'heart';
-                h.innerHTML = '❤';
+                h.className = 'heart'; h.innerHTML = '❤';
                 h.style.left = Math.random() * 100 + 'vw';
                 h.style.animationDuration = (Math.random() * 2 + 3) + 's';
                 document.body.appendChild(h);
                 setTimeout(() => h.remove(), 4000);
-            }, 600);
+            }, 800);
         }
     </script>
 </body>
