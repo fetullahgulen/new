@@ -2,203 +2,233 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Zahid'in Canlı Arşivi ♡</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zahid'in Özel Arşivi ♡</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
     <style>
-        :root { --pink-light: #ffebf2; --pink-main: #ff85a2; --pink-dark: #f06292; }
-        body { background: var(--pink-light); font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; }
-        
-        #login-overlay { position: fixed; inset: 0; background: var(--pink-light); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-        .login-box { background: white; padding: 40px; border-radius: 30px; border: 3px solid var(--pink-main); text-align: center; }
-        
-        #main-content { display: none; width: 90%; max-width: 900px; padding: 40px 0; text-align: center; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px; }
-        .card { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .card img { width: 100%; border-radius: 15px; }
-        
-        .admin-panel { background: white; padding: 25px; border-radius: 25px; border: 2px dashed var(--pink-main); margin-top: 50px; }
-        input, select { padding: 10px; border-radius: 10px; border: 2px solid var(--pink-light); margin: 5px; outline: none; }
-        button { background: var(--pink-main); color: white; border: none; padding: 10px 20px; border-radius: 15px; cursor: pointer; font-weight: 600; }
+        :root {
+            --pink-light: #ffebf2;
+            --pink-main: #ff85a2;
+            --pink-dark: #f06292;
+            --white: #ffffff;
+        }
+
+        body {
+            background-color: var(--pink-light);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- ŞİFRE EKRANI --- */
+        #login-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--pink-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: 0.5s;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(255, 133, 162, 0.3);
+            border: 3px solid var(--pink-main);
+        }
+
+        .login-box input {
+            padding: 12px;
+            border: 2px solid var(--pink-light);
+            border-radius: 15px;
+            outline: none;
+            text-align: center;
+            font-size: 16px;
+            width: 200px;
+        }
+
+        .login-box button {
+            margin-top: 15px;
+            background: var(--pink-main);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* --- ANA İÇERİK (BAŞTA GİZLİ) --- */
+        #main-content { display: none; width: 100%; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box; }
+
+        .tabs { margin: 20px 0; display: flex; gap: 15px; }
+        .tab-btn {
+            background: var(--white);
+            border: 2px solid var(--pink-main);
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--pink-dark);
+        }
+        .tab-btn.active { background: var(--pink-main); color: white; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 100%; max-width: 1000px; margin-top: 20px; }
+        .card { background: white; border-radius: 20px; padding: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; border: 2px solid transparent; transition: 0.3s; }
+        .card:hover { border-color: var(--pink-main); transform: translateY(-5px); }
+        .card img { width: 100%; border-radius: 15px; margin-bottom: 10px; }
+        audio { width: 100%; margin-top: 10px; }
+
+        /* --- EKLEME FORMU --- */
+        .admin-panel {
+            background: white;
+            padding: 25px;
+            border-radius: 25px;
+            margin-top: 50px;
+            border: 2px dashed var(--pink-main);
+            width: 90%; max-width: 500px;
+            text-align: center;
+        }
+        .admin-panel input, .admin-panel select { width: 80%; margin: 5px; padding: 10px; border-radius: 12px; border: 1px solid #ddd; outline: none; }
+
+        /* Uçan Kalpler */
+        .heart { position: fixed; color: var(--pink-main); font-size: 20px; z-index: -1; animation: moveUp 4s linear infinite; }
+        @keyframes moveUp { 0% { transform: translateY(100vh); opacity: 1; } 100% { transform: translateY(-10vh); opacity: 0; } }
     </style>
 </head>
 <body>
 
     <div id="login-overlay">
         <div class="login-box">
-            <h2>Giriş ♡</h2>
-            <input type="password" id="pass" placeholder="Şifre..."> <br>
-            <button onclick="login()">GİRİŞ</button>
+            <h2 style="color: var(--pink-dark);">Hoş Geldin ♡</h2>
+            <input type="password" id="pass-input" placeholder="Şifre (yesbe)">
+            <br>
+            <button onclick="checkPass()">GİRİŞ YAP</button>
         </div>
     </div>
 
     <div id="main-content">
-        <h1 style="color: var(--pink-dark);">zahid.life ♡</h1>
-        
-        <div id="item-grid" class="grid"></div>
+        <h1 style="color: var(--pink-dark); text-shadow: 2px 2px white;">zahid.life ♡</h1>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('ses-grid', this)">🎵 Sesler</button>
+            <button class="tab-btn" onclick="showTab('ss-grid', this)">📸 SS'ler</button>
+        </div>
+
+        <div id="ses-grid" class="grid section"></div>
+        <div id="ss-grid" class="grid section" style="display:none;"></div>
 
         <div class="admin-panel">
-            <h3>✨ Yeni Bir Şey Ekle</h3>
-            <input type="text" id="name" placeholder="İsim">
-            <input type="text" id="link" placeholder="Discord Linki">
-            <select id="type">
-                <option value="ses">Ses 🎵</option>
-                <option value="ss">SS 📸</option>
+            <h3 style="color: var(--pink-dark);">✨ Yeni Arşiv Ekle</h3>
+            <input type="text" id="item-name" placeholder="Başlık (Örn: Gece Kaydı)">
+            <input type="text" id="item-link" placeholder="Discord Linki">
+            <select id="item-type">
+                <option value="ses">Ses Dosyası 🎵</option>
+                <option value="ss">Ekran Görüntüsü 📸</option>
             </select>
-            <button onclick="saveToFirebase()">Buluta Kaydet ♡</button>
+            <br>
+            <button onclick="saveToFirebase()" style="background: var(--pink-dark); margin-top: 10px;">Buluta Kaydet ♡</button>
         </div>
     </div>
 
     <script>
-        // BURAYA FIREBASE'DEN ALDIĞIN KODLARI YAPIŞTIR
-        <!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <title>Zahid'in Canlı Arşivi ♡</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-    <style>
-        :root { --pink-light: #ffebf2; --pink-main: #ff85a2; --pink-dark: #f06292; }
-        body { background: var(--pink-light); font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; }
-        
-        #login-overlay { position: fixed; inset: 0; background: var(--pink-light); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-        .login-box { background: white; padding: 40px; border-radius: 30px; border: 3px solid var(--pink-main); text-align: center; }
-        
-        #main-content { display: none; width: 90%; max-width: 900px; padding: 40px 0; text-align: center; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px; }
-        .card { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .card img { width: 100%; border-radius: 15px; }
-        
-        .admin-panel { background: white; padding: 25px; border-radius: 25px; border: 2px dashed var(--pink-main); margin-top: 50px; }
-        input, select { padding: 10px; border-radius: 10px; border: 2px solid var(--pink-light); margin: 5px; outline: none; }
-        button { background: var(--pink-main); color: white; border: none; padding: 10px 20px; border-radius: 15px; cursor: pointer; font-weight: 600; }
-    </style>
-</head>
-<body>
-
-    <div id="login-overlay">
-        <div class="login-box">
-            <h2>Giriş ♡</h2>
-            <input type="password" id="pass" placeholder="Şifre..."> <br>
-            <button onclick="login()">GİRİŞ</button>
-        </div>
-    </div>
-
-    <div id="main-content">
-        <h1 style="color: var(--pink-dark);">zahid.life ♡</h1>
-        
-        <div id="item-grid" class="grid"></div>
-
-        <div class="admin-panel">
-            <h3>✨ Yeni Bir Şey Ekle</h3>
-            <input type="text" id="name" placeholder="İsim">
-            <input type="text" id="link" placeholder="Discord Linki">
-            <select id="type">
-                <option value="ses">Ses 🎵</option>
-                <option value="ss">SS 📸</option>
-            </select>
-            <button onclick="saveToFirebase()">Buluta Kaydet ♡</button>
-        </div>
-    </div>
-
-    <script>
-        // BURAYA FIREBASE'DEN ALDIĞIN KODLARI YAPIŞTIR
+        // --- FIREBASE AYARLARI (BURAYI KENDİ BİLGİLERİNLE DOLDUR) ---
         const firebaseConfig = {
-            apiKey: "AIza...",
-            authDomain: "projeniz.firebaseapp.com",
-            databaseURL: "https://projeniz.firebaseio.com",
-            projectId: "projeniz",
-            storageBucket: "projeniz.appspot.com",
-            messagingSenderId: "123...",
-            appId: "1:123..."
-        };
+  apiKey: "AIzaSyBr3pYSUGjFyoLNXz3OS9mluBEriCCxyCw",
+  authDomain: "ses-efcb4.firebaseapp.com",
+  databaseURL: "https://ses-efcb4-default-rtdb.firebaseio.com",
+  projectId: "ses-efcb4",
+  storageBucket: "ses-efcb4.firebasestorage.app",
+  messagingSenderId: "935403740924",
+  appId: "1:935403740924:web:597306db08302cb42bc179",
+  measurementId: "G-SLFGZEEKMK"
+};
+
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        function login() {
-    const girilenSifre = document.getElementById('pass').value.toLowerCase().trim();
-    if (girilenSifre === "yesbe") {
-        document.getElementById('login-overlay').style.display = 'none';
-        document.getElementById('main-content').style.display = 'block';
-        loadData(); // Firebase'den verileri çeker
-    } else { 
-        alert("Hatalı şifre! Tekrar dene ♡"); 
-    }
-}
-
-        function saveToFirebase() {
-            const name = document.getElementById('name').value;
-            const link = document.getElementById('item-link').value; // DİKKAT: link id'si "link" olmalı
-            const type = document.getElementById('type').value;
-            const realLink = document.getElementById('link').value;
-
-            if(!name || !realLink) return alert("Boş bırakma!");
-
-            db.ref('arsiv').push({ name, link: realLink, type });
-            alert("Başarıyla buluta eklendi! Herkes görebilecek. ♡");
+        // Şifre Kontrolü
+        function checkPass() {
+            const val = document.getElementById('pass-input').value.toLowerCase().trim();
+            if (val === "yesbe") {
+                document.getElementById('login-overlay').style.opacity = "0";
+                setTimeout(() => {
+                    document.getElementById('login-overlay').style.display = "none";
+                    document.getElementById('main-content').style.display = "flex";
+                    createHearts();
+                    loadData();
+                }, 500);
+            } else {
+                alert("Hatalı şifre! Tekrar dene ♡");
+            }
         }
 
+        // Sekme Değiştirme
+        function showTab(gridId, btn) {
+            document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(gridId).style.display = 'grid';
+            btn.classList.add('active');
+        }
+
+        // Firebase'e Kaydet
+        function saveToFirebase() {
+            const name = document.getElementById('item-name').value;
+            const link = document.getElementById('item-link').value;
+            const type = document.getElementById('item-type').value;
+
+            if (!name || !link) return alert("Lütfen boş bırakma!");
+
+            db.ref('arsiv').push({ name, link, type });
+            alert("Buluta eklendi! Herkes görebilecek. ♡");
+            
+            document.getElementById('item-name').value = "";
+            document.getElementById('item-link').value = "";
+        }
+
+        // Verileri Canlı Çek
         function loadData() {
             db.ref('arsiv').on('value', (snapshot) => {
-                const grid = document.getElementById('item-grid');
-                grid.innerHTML = "";
+                const sesGrid = document.getElementById('ses-grid');
+                const ssGrid = document.getElementById('ss-grid');
+                sesGrid.innerHTML = ""; ssGrid.innerHTML = "";
+
                 snapshot.forEach((child) => {
-                    const item = child.val();
+                    const data = child.val();
                     const card = document.createElement('div');
                     card.className = 'card';
-                    card.innerHTML = `<p>♡ ${item.name}</p>
-                        ${item.type === 'ses' ? `<audio controls src="${item.link}"></audio>` : `<img src="${item.link}">`}`;
-                    grid.appendChild(card);
+                    card.innerHTML = `<p style="font-weight:600; color:#555;">♡ ${data.name}</p>
+                        ${data.type === 'ses' ? `<audio controls src="${data.link}"></audio>` : `<img src="${data.link}" alt="SS">`}`;
+                    
+                    if (data.type === 'ses') sesGrid.appendChild(card);
+                    else ssGrid.appendChild(card);
                 });
             });
         }
-    </script>
-</body>
-</html>
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        function login() {
-    const girilenSifre = document.getElementById('pass').value.toLowerCase().trim();
-    if (girilenSifre === "yesbe") {
-        document.getElementById('login-overlay').style.display = 'none';
-        document.getElementById('main-content').style.display = 'block';
-        loadData(); // Firebase'den verileri çeker
-    } else { 
-        alert("Hatalı şifre! Tekrar dene ♡"); 
-    }
-}
-
-        function saveToFirebase() {
-            const name = document.getElementById('name').value;
-            const link = document.getElementById('item-link').value; // DİKKAT: link id'si "link" olmalı
-            const type = document.getElementById('type').value;
-            const realLink = document.getElementById('link').value;
-
-            if(!name || !realLink) return alert("Boş bırakma!");
-
-            db.ref('arsiv').push({ name, link: realLink, type });
-            alert("Başarıyla buluta eklendi! Herkes görebilecek. ♡");
-        }
-
-        function loadData() {
-            db.ref('arsiv').on('value', (snapshot) => {
-                const grid = document.getElementById('item-grid');
-                grid.innerHTML = "";
-                snapshot.forEach((child) => {
-                    const item = child.val();
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `<p>♡ ${item.name}</p>
-                        ${item.type === 'ses' ? `<audio controls src="${item.link}"></audio>` : `<img src="${item.link}">`}`;
-                    grid.appendChild(card);
-                });
-            });
+        // Animasyon: Kalpler
+        function createHearts() {
+            setInterval(() => {
+                const h = document.createElement('div');
+                h.className = 'heart';
+                h.innerHTML = '❤';
+                h.style.left = Math.random() * 100 + 'vw';
+                h.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                document.body.appendChild(h);
+                setTimeout(() => h.remove(), 4000);
+            }, 600);
         }
     </script>
 </body>
