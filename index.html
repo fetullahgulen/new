@@ -2,173 +2,197 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>♡</title>
+    <title>Zahid'in Canlı Arşivi ♡</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
-        :root {
-            --pink-light: #ffebf2;
-            --pink-main: #ff85a2;
-            --pink-dark: #f06292;
-            --white: #ffffff;
-        }
-
-        /* Şifre sorulana kadar her şeyi gizle */
-        body {
-            display: none;
-            background-color: var(--pink-light);
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            overflow-x: hidden;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        /* Uçan Kalpler Animasyonu */
-        .heart {
-            position: fixed;
-            color: var(--pink-main);
-            font-size: 20px;
-            user-select: none;
-            z-index: -1;
-            animation: moveUp 4s linear infinite;
-        }
-
-        @keyframes moveUp {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-        }
-
-        /* Sekme (Tab) Tasarımı */
-        .tabs {
-            margin: 20px 0;
-            display: flex;
-            gap: 15px;
-        }
-
-        .tab-btn {
-            background: var(--white);
-            border: 2px solid var(--pink-main);
-            padding: 10px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--pink-dark);
-            transition: 0.3s;
-        }
-
-        .tab-btn.active {
-            background: var(--pink-main);
-            color: white;
-            box-shadow: 0 4px 15px rgba(255, 133, 162, 0.4);
-        }
-
-        /* İçerik Alanları */
-        .content-section { display: none; width: 90%; max-width: 900px; animation: fadeIn 0.5s; }
-        .content-section.active { display: block; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Kart Tasarımları */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 20px;
-            padding: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .card:hover { transform: scale(1.03); border-color: var(--pink-main); }
-
-        .ss-img {
-            width: 100%;
-            border-radius: 15px;
-            cursor: zoom-in;
-            transition: 0.3s;
-        }
-
-        audio { width: 100%; margin-top: 10px; border-radius: 10px; }
-
-        h1 { color: var(--pink-dark); margin-top: 40px; }
+        :root { --pink-light: #ffebf2; --pink-main: #ff85a2; --pink-dark: #f06292; }
+        body { background: var(--pink-light); font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; }
+        
+        #login-overlay { position: fixed; inset: 0; background: var(--pink-light); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .login-box { background: white; padding: 40px; border-radius: 30px; border: 3px solid var(--pink-main); text-align: center; }
+        
+        #main-content { display: none; width: 90%; max-width: 900px; padding: 40px 0; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px; }
+        .card { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .card img { width: 100%; border-radius: 15px; }
+        
+        .admin-panel { background: white; padding: 25px; border-radius: 25px; border: 2px dashed var(--pink-main); margin-top: 50px; }
+        input, select { padding: 10px; border-radius: 10px; border: 2px solid var(--pink-light); margin: 5px; outline: none; }
+        button { background: var(--pink-main); color: white; border: none; padding: 10px 20px; border-radius: 15px; cursor: pointer; font-weight: 600; }
     </style>
 </head>
 <body>
 
-    <h1>zahid.life ♡</h1>
-
-    <div class="tabs">
-        <button class="tab-btn active" onclick="showTab('sesler')">🎵 Ses Kayıtları</button>
-        <button class="tab-btn" onclick="showTab('ssler')">📸 Ekran Görüntüleri</button>
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2>Giriş ♡</h2>
+            <input type="password" id="pass" placeholder="Şifre..."> <br>
+            <button onclick="login()">GİRİŞ</button>
+        </div>
     </div>
 
-    <div id="sesler" class="content-section active">
-        <div class="grid">
-            <div class="card">
-                <p>kaydı kapat!</p>
-                <audio controls preload="metadata">
-                    <source src="https://cdn.discordapp.com/attachments/1452263960219877500/1483758661762420807/voice-message.ogg?ex=69bbc16f&is=69ba6fef&hm=ff56b0ed64ac7a52ffcb6aec1ae82dbd4c50799dae929d6a30b8cec27414fe5b&" type="audio/mp4">
-                </audio>
-            </div>
-            </div>
-    </div>
-<div id="sesler" class="content-section active">
-        <div class="grid">
-            <div class="card">
-                <p>uykulu</p>
-                <audio controls preload="metadata">
-                    <source src="https://cdn.discordapp.com/attachments/1452263960219877500/1483757211325825074/voice-message.ogg?ex=69bbc016&is=69ba6e96&hm=bc629e3428c205f993e15c345e83a241911e21288c0293e6aa30db0eb64bcceb&" type="audio/mp4">
-                </audio>
-            </div>
-            </div>
-    </div>
-    <div id="ssler" class="content-section">
-        <div class="grid">
-            <div class="card">
-                <p>♡ Mesaj #1</p>
-                <img src="https://cdn.discordapp.com/attachments/1452263960219877500/1483760088517705738/image.png?ex=69bbc2c4&is=69ba7144&hm=2beb9f0a2fc345659ab014a087ba2c34b86efd22462ee272c2b099804c07baa1&" class="ss-img" alt="SS">
-            </div>
-            </div>
+    <div id="main-content">
+        <h1 style="color: var(--pink-dark);">zahid.life ♡</h1>
+        
+        <div id="item-grid" class="grid"></div>
+
+        <div class="admin-panel">
+            <h3>✨ Yeni Bir Şey Ekle</h3>
+            <input type="text" id="name" placeholder="İsim">
+            <input type="text" id="link" placeholder="Discord Linki">
+            <select id="type">
+                <option value="ses">Ses 🎵</option>
+                <option value="ss">SS 📸</option>
+            </select>
+            <button onclick="saveToFirebase()">Buluta Kaydet ♡</button>
+        </div>
     </div>
 
     <script>
-        // ŞİFRE KONTROLÜ
-        const password = prompt("Lütfen giriş şifresini yazın ♡");
-        if (password === "yesbe") {
-            document.body.style.display = "flex";
-            createHearts();
-        } else {
-            alert("Hatalı şifre! Erişim reddedildi.");
-            window.location.href = "about:blank"; // Yanlışsa boş sayfaya at
+        // BURAYA FIREBASE'DEN ALDIĞIN KODLARI YAPIŞTIR
+        <!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Zahid'in Canlı Arşivi ♡</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <style>
+        :root { --pink-light: #ffebf2; --pink-main: #ff85a2; --pink-dark: #f06292; }
+        body { background: var(--pink-light); font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; }
+        
+        #login-overlay { position: fixed; inset: 0; background: var(--pink-light); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .login-box { background: white; padding: 40px; border-radius: 30px; border: 3px solid var(--pink-main); text-align: center; }
+        
+        #main-content { display: none; width: 90%; max-width: 900px; padding: 40px 0; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px; }
+        .card { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .card img { width: 100%; border-radius: 15px; }
+        
+        .admin-panel { background: white; padding: 25px; border-radius: 25px; border: 2px dashed var(--pink-main); margin-top: 50px; }
+        input, select { padding: 10px; border-radius: 10px; border: 2px solid var(--pink-light); margin: 5px; outline: none; }
+        button { background: var(--pink-main); color: white; border: none; padding: 10px 20px; border-radius: 15px; cursor: pointer; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2>Giriş ♡</h2>
+            <input type="password" id="pass" placeholder="Şifre..."> <br>
+            <button onclick="login()">GİRİŞ</button>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <h1 style="color: var(--pink-dark);">zahid.life ♡</h1>
+        
+        <div id="item-grid" class="grid"></div>
+
+        <div class="admin-panel">
+            <h3>✨ Yeni Bir Şey Ekle</h3>
+            <input type="text" id="name" placeholder="İsim">
+            <input type="text" id="link" placeholder="Discord Linki">
+            <select id="type">
+                <option value="ses">Ses 🎵</option>
+                <option value="ss">SS 📸</option>
+            </select>
+            <button onclick="saveToFirebase()">Buluta Kaydet ♡</button>
+        </div>
+    </div>
+
+    <script>
+        // BURAYA FIREBASE'DEN ALDIĞIN KODLARI YAPIŞTIR
+        const firebaseConfig = {
+            apiKey: "AIza...",
+            authDomain: "projeniz.firebaseapp.com",
+            databaseURL: "https://projeniz.firebaseio.com",
+            projectId: "projeniz",
+            storageBucket: "projeniz.appspot.com",
+            messagingSenderId: "123...",
+            appId: "1:123..."
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        function login() {
+            if (document.getElementById('pass').value === "yesbe") {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                loadData();
+            } else { alert("Hatalı!"); }
         }
 
-        // TAB SİSTEMİ
-        function showTab(id) {
-            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            event.currentTarget.classList.add('active');
+        function saveToFirebase() {
+            const name = document.getElementById('name').value;
+            const link = document.getElementById('item-link').value; // DİKKAT: link id'si "link" olmalı
+            const type = document.getElementById('type').value;
+            const realLink = document.getElementById('link').value;
+
+            if(!name || !realLink) return alert("Boş bırakma!");
+
+            db.ref('arsiv').push({ name, link: realLink, type });
+            alert("Başarıyla buluta eklendi! Herkes görebilecek. ♡");
         }
 
-        // UÇAN KALPLER OLUŞTURUCU
-        function createHearts() {
-            setInterval(() => {
-                const heart = document.createElement('div');
-                heart.classList.add('heart');
-                heart.innerHTML = '❤';
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 4000);
-            }, 500);
+        function loadData() {
+            db.ref('arsiv').on('value', (snapshot) => {
+                const grid = document.getElementById('item-grid');
+                grid.innerHTML = "";
+                snapshot.forEach((child) => {
+                    const item = child.val();
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `<p>♡ ${item.name}</p>
+                        ${item.type === 'ses' ? `<audio controls src="${item.link}"></audio>` : `<img src="${item.link}">`}`;
+                    grid.appendChild(card);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        function login() {
+            if (document.getElementById('pass').value === "yesbe") {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                loadData();
+            } else { alert("Hatalı!"); }
+        }
+
+        function saveToFirebase() {
+            const name = document.getElementById('name').value;
+            const link = document.getElementById('item-link').value; // DİKKAT: link id'si "link" olmalı
+            const type = document.getElementById('type').value;
+            const realLink = document.getElementById('link').value;
+
+            if(!name || !realLink) return alert("Boş bırakma!");
+
+            db.ref('arsiv').push({ name, link: realLink, type });
+            alert("Başarıyla buluta eklendi! Herkes görebilecek. ♡");
+        }
+
+        function loadData() {
+            db.ref('arsiv').on('value', (snapshot) => {
+                const grid = document.getElementById('item-grid');
+                grid.innerHTML = "";
+                snapshot.forEach((child) => {
+                    const item = child.val();
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `<p>♡ ${item.name}</p>
+                        ${item.type === 'ses' ? `<audio controls src="${item.link}"></audio>` : `<img src="${item.link}">`}`;
+                    grid.appendChild(card);
+                });
+            });
         }
     </script>
 </body>
