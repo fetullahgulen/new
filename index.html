@@ -1,9 +1,9 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>nehir'i çok seviyorum</title>
+    <title>Zahid'in Arşivi ♡</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
@@ -17,148 +17,49 @@
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--pink-light); font-family: 'Poppins', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
 
-        body {
-            background-color: var(--pink-light);
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+        /* --- GİRİŞ --- */
+        #login-overlay { position: fixed; inset: 0; background: var(--pink-light); display: flex; justify-content: center; align-items: center; z-index: 10000; }
+        .login-box { background: white; padding: 25px; border-radius: 25px; text-align: center; width: 85%; max-width: 300px; border: 2px solid var(--pink-main); }
 
-        /* --- MOBİL UYUMLU GİRİŞ --- */
-        #login-overlay {
-            position: fixed;
-            inset: 0;
-            background: var(--pink-light);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-        }
-
-        .login-box {
-            background: white;
-            padding: 25px;
-            border-radius: 25px;
-            text-align: center;
-            width: 85%;
-            max-width: 300px;
-            box-shadow: 0 10px 25px rgba(255, 133, 162, 0.2);
-            border: 2px solid var(--pink-main);
-        }
-
-        .login-box input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 12px;
-            border: 1px solid #ddd;
-            text-align: center;
-            font-size: 16px;
-        }
-
-        /* --- ANA İÇERIK ALANI --- */
-        #main-content {
-            display: none;
-            width: 100%;
-            padding: 15px;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .tabs {
-            position: sticky;
-            top: 10px;
-            z-index: 100;
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .tab-btn {
-            background: white;
-            border: 2px solid var(--pink-main);
-            padding: 10px 18px;
-            border-radius: 50px;
-            font-weight: 600;
-            color: var(--pink-dark);
-            font-size: 13px;
-            white-space: nowrap;
-        }
-
+        /* --- ANA İÇERİK --- */
+        #main-content { display: none; width: 100%; padding: 15px; flex-direction: column; align-items: center; }
+        .tabs { position: sticky; top: 10px; z-index: 100; display: flex; gap: 8px; margin-bottom: 20px; }
+        .tab-btn { background: white; border: 2px solid var(--pink-main); padding: 10px 18px; border-radius: 50px; font-weight: 600; color: var(--pink-dark); font-size: 13px; cursor: pointer; }
         .tab-btn.active { background: var(--pink-main); color: white; }
 
-        /* --- GRID SİSTEMİ (MOBİLDE 2'Lİ, MASAÜSTÜNDE 3'LÜ) --- */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Mobilde yan yana 2 tane */
-            gap: 12px;
-            width: 100%;
-            max-width: 800px;
-        }
-
-        @media (max-width: 350px) { .grid { grid-template-columns: 1fr; } } /* Çok küçük ekranlar */
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; max-width: 800px; }
         @media (min-width: 768px) { .grid { grid-template-columns: repeat(3, 1fr); } }
 
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 10px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+        /* --- HAVALI SES KARTI --- */
+        .card { background: white; border-radius: 20px; padding: 15px; box-shadow: 0 4px 15px rgba(255, 133, 162, 0.1); position: relative; border: 1px solid #fff; transition: 0.3s; }
+        .card:hover { transform: translateY(-3px); border-color: var(--pink-main); }
+        .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 15px; margin-bottom: 10px; cursor: pointer; }
+        .card p { font-size: 13px; font-weight: 600; margin: 8px 0; color: var(--pink-dark); }
 
-        .card img {
-            width: 100%;
-            aspect-ratio: 1 / 1; /* Kare format */
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 8px;
-        }
-
-        .card p { font-size: 12px; font-weight: 600; margin: 5px 0; color: var(--pink-dark); }
+        /* --- ÖZEL SES OYNATICI (CUSTOM PLAYER) --- */
+        .custom-player { background: var(--pink-light); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 5px; }
+        .player-controls { display: flex; align-items: center; gap: 10px; }
+        .play-btn { background: var(--pink-main); border: none; border-radius: 50%; width: 30px; height: 30px; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; }
         
-        audio {
-            width: 100%;
-            height: 30px;
-            filter: sepia(20%) hue-rotate(280deg) brightness(1.1); /* Pembe tonu veriyoruz */
+        .seek-slider { 
+            flex: 1; -webkit-appearance: none; background: #fff; height: 6px; border-radius: 5px; outline: none; 
+            cursor: pointer;
+        }
+        .seek-slider::-webkit-slider-thumb { 
+            -webkit-appearance: none; width: 14px; height: 14px; background: var(--pink-dark); border-radius: 50%; border: 2px solid white; 
         }
 
-        /* --- ADMIN PANEL --- */
-        #admin-panel {
-            display: none;
-            width: 95%;
-            max-width: 400px;
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            margin-top: 30px;
-            border: 2px dashed var(--pink-main);
-        }
+        .time { font-size: 10px; color: var(--pink-dark); font-weight: 600; }
 
+        .delete-btn { position: absolute; top: -5px; right: -5px; background: var(--pink-dark); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 12px; display: none; z-index: 20; border: 2px solid white; }
+
+        /* --- ADMIN --- */
+        #admin-panel { display: none; width: 95%; max-width: 400px; background: white; padding: 20px; border-radius: 20px; margin-top: 30px; border: 2px dashed var(--pink-main); text-align: center; }
         #admin-panel input, #admin-panel select { width: 100%; margin: 5px 0; padding: 10px; border-radius: 10px; border: 1px solid #eee; }
 
-        /* --- TOAST BİLDİRİM --- */
-        #toast {
-            position: fixed;
-            bottom: 20px;
-            background: var(--pink-dark);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 12px;
-            display: none;
-            z-index: 11000;
-        }
-
+        #toast { position: fixed; bottom: 20px; background: var(--pink-dark); color: white; padding: 10px 20px; border-radius: 20px; font-size: 12px; display: none; z-index: 11000; }
         .heart { position: fixed; color: var(--pink-main); pointer-events: none; z-index: -1; animation: fly 4s linear; }
         @keyframes fly { from { transform: translateY(100vh); opacity: 1; } to { transform: translateY(-10vh); opacity: 0; } }
     </style>
@@ -169,14 +70,14 @@
 
     <div id="login-overlay">
         <div class="login-box">
-            <h3 style="color: var(--pink-dark);">Giriş Yap ♡</h3>
+            <h3 style="color: var(--pink-dark);">Hoş Geldin ♡</h3>
             <input type="password" id="pass" placeholder="Şifre...">
-            <button onclick="check()" style="background:var(--pink-main); color:white; border:none; padding:12px; width:100%; border-radius:12px; font-weight:600;">GİRİŞ</button>
+            <button onclick="check()" style="background:var(--pink-main); color:white; border:none; padding:12px; width:100%; border-radius:12px; font-weight:600; cursor:pointer;">GİRİŞ</button>
         </div>
     </div>
 
     <div id="main-content">
-        <h2 style="color: var(--pink-dark); margin-bottom: 10px;">zahid.life</h2>
+        <h2 style="color: var(--pink-dark);">zahid.life ♡</h2>
 
         <div class="tabs">
             <button class="tab-btn active" onclick="tab('ses', this)">🎵 SESLER</button>
@@ -187,19 +88,19 @@
         <div id="ss-grid" class="grid area" style="display:none;"></div>
 
         <div id="admin-panel">
-            <p style="font-weight:600; color:var(--pink-dark); margin:0;">✨ Admin Modu: Nehir</p>
+            <p style="font-weight:600; color:var(--pink-dark); margin-bottom:10px;">✨ İçerik Ekle (Admin: Nehir)</p>
             <input type="text" id="name" placeholder="Başlık">
-            <input type="text" id="link" placeholder="Discord Linki">
+            <input type="text" id="link" placeholder="Discord Ses/Resim Linki">
             <select id="type">
                 <option value="ses">Ses Kaydı</option>
-                <option value="ss">SS/Resim</option>
+                <option value="ss">SS / Resim</option>
             </select>
-            <button onclick="save()" style="background:var(--pink-dark); color:white; border:none; padding:10px; width:100%; border-radius:10px; margin-top:5px;">Kaydet ♡</button>
+            <button onclick="save()" style="background:var(--pink-dark); color:white; border:none; padding:12px; width:100%; border-radius:10px; margin-top:10px; cursor:pointer;">Kaydet ♡</button>
         </div>
     </div>
 
     <script>
-        // FIREBASE CONFIG BURAYA GELECEK
+        // FIREBASE CONFIG BURAYA
         const firebaseConfig = {
   apiKey: "AIzaSyBr3pYSUGjFyoLNXz3OS9mluBEriCCxyCw",
   authDomain: "ses-efcb4.firebaseapp.com",
@@ -211,24 +112,19 @@
   measurementId: "G-SLFGZEEKMK"
 };
 
-
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        let isAdmin = false;
 
-        function msg(t) {
-            const x = document.getElementById('toast');
-            x.innerText = t; x.style.display = 'block';
-            setTimeout(() => x.style.display = 'none', 3000);
-        }
+        function msg(t) { const x = document.getElementById('toast'); x.innerText = t; x.style.display = 'block'; setTimeout(() => x.style.display = 'none', 3000); }
 
         function check() {
             const p = document.getElementById('pass').value.toLowerCase().trim();
             if (p === "yesbe" || p === "nehir") {
                 document.getElementById('login-overlay').style.display = 'none';
                 document.getElementById('main-content').style.display = 'flex';
-                if(p === "nehir") document.getElementById('admin-panel').style.display = 'block';
-                load();
-                setInterval(heart, 800);
+                if(p === "nehir") { isAdmin = true; document.getElementById('admin-panel').style.display = 'block'; }
+                load(); setInterval(heart, 800);
             } else { msg("Hatalı şifre! ♡"); }
         }
 
@@ -240,37 +136,87 @@
         }
 
         function save() {
-            const n = document.getElementById('name').value;
-            const l = document.getElementById('link').value;
-            const t = document.getElementById('type').value;
+            const n = document.getElementById('name').value; const l = document.getElementById('link').value; const t = document.getElementById('type').value;
             if(!n || !l) return msg("Boş bırakma! ♡");
             db.ref('arsiv').push({ n, l, t });
-            msg("Başarıyla eklendi! ♡");
+            msg("Buluta eklendi! ♡");
             document.getElementById('name').value = ""; document.getElementById('link').value = "";
         }
 
+        function remove(k) { if(confirm("Silinsin mi? ♡")) db.ref('arsiv').child(k).remove().then(() => msg("Silindi!")); }
+
         function load() {
             db.ref('arsiv').on('value', s => {
-                const ses = document.getElementById('ses-grid');
-                const ss = document.getElementById('ss-grid');
+                const ses = document.getElementById('ses-grid'); const ss = document.getElementById('ss-grid');
                 ses.innerHTML = ""; ss.innerHTML = "";
                 s.forEach(c => {
-                    const d = c.val();
-                    const card = `<div class="card">
-                        ${d.t === 'ss' ? `<img src="${d.l}" onclick="window.open('${d.l}')">` : ''}
-                        <p>♡ ${d.n}</p>
-                        ${d.t === 'ses' ? `<audio controls src="${d.l}"></audio>` : ''}
-                    </div>`;
-                    if(d.t === 'ses') ses.innerHTML += card; else ss.innerHTML += card;
+                    const d = c.val(); const k = c.key;
+                    const card = document.createElement('div'); card.className = 'card';
+                    const del = isAdmin ? `<button class="delete-btn" style="display:flex" onclick="remove('${k}')">X</button>` : '';
+
+                    if(d.t === 'ss') {
+                        card.innerHTML = `${del}<img src="${d.l}" onclick="window.open('${d.l}')"><p>♡ ${d.n}</p>`;
+                        ss.appendChild(card);
+                    } else {
+                        // ÖZEL SES OYNATICI TASARIMI
+                        card.innerHTML = `
+                            ${del}
+                            <p>♡ ${d.n}</p>
+                            <div class="custom-player">
+                                <audio id="audio-${k}" src="${d.l}"></audio>
+                                <div class="player-controls">
+                                    <button class="play-btn" id="btn-${k}" onclick="togglePlay('${k}')">▶</button>
+                                    <input type="range" class="seek-slider" id="seek-${k}" value="0" max="100" oninput="seekAudio('${k}')">
+                                </div>
+                                <div style="display:flex; justify-content:space-between; width:100%">
+                                    <span class="time" id="cur-${k}">0:00</span>
+                                    <span class="time" id="dur-${k}">0:00</span>
+                                </div>
+                            </div>
+                        `;
+                        ses.appendChild(card);
+                        setupAudioListeners(k);
+                    }
                 });
             });
         }
 
+        // --- SES KONTROL MANTIĞI ---
+        function togglePlay(k) {
+            const a = document.getElementById('audio-' + k);
+            const b = document.getElementById('btn-' + k);
+            if(a.paused) { a.play(); b.innerText = "||"; } else { a.pause(); b.innerText = "▶"; }
+        }
+
+        function setupAudioListeners(k) {
+            const a = document.getElementById('audio-' + k);
+            const s = document.getElementById('seek-' + k);
+            const cur = document.getElementById('cur-' + k);
+            const dur = document.getElementById('dur-' + k);
+
+            a.onloadedmetadata = () => { dur.innerText = formatTime(a.duration); };
+            a.ontimeupdate = () => {
+                s.value = (a.currentTime / a.duration) * 100;
+                cur.innerText = formatTime(a.currentTime);
+            };
+            a.onended = () => { document.getElementById('btn-' + k).innerText = "▶"; s.value = 0; };
+        }
+
+        function seekAudio(k) {
+            const a = document.getElementById('audio-' + k);
+            const s = document.getElementById('seek-' + k);
+            a.currentTime = (s.value / 100) * a.duration;
+        }
+
+        function formatTime(sec) {
+            let m = Math.floor(sec / 60);
+            let s = Math.floor(sec % 60);
+            return m + ":" + (s < 10 ? "0" + s : s);
+        }
+
         function heart() {
-            const h = document.createElement('div');
-            h.className = 'heart'; h.innerHTML = '❤';
-            h.style.left = Math.random() * 100 + 'vw';
-            document.body.appendChild(h);
+            const h = document.createElement('div'); h.className = 'heart'; h.innerHTML = '❤';
+            h.style.left = Math.random() * 100 + 'vw'; document.body.appendChild(h);
             setTimeout(() => h.remove(), 4000);
         }
     </script>
