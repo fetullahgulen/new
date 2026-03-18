@@ -2,17 +2,65 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Zahid | Audio System</title>
+    <title>Zahid | Custom Audio Player</title>
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
-        body { background: #0a0a0c; color: #00ff88; font-family: monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { border: 1px solid #222; padding: 20px; background: #111; border-radius: 10px; box-shadow: 0 0 20px rgba(0,255,136,0.1); width: 400px; text-align: center; }
-        h2 { font-size: 12px; letter-spacing: 2px; margin-bottom: 20px; opacity: 0.7; }
+        :root {
+            /* BURADAN İSTEDİĞİN RENGİ DEĞİŞTİREBİLİRSİN */
+            --plyr-color-main: #00ff88; 
+            --bg-color: #050505;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .player-container {
+            width: 400px;
+            padding: 30px;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.1);
+        }
+
+        h2 {
+            color: var(--plyr-color-main);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Plyr Oynatıcıyı Karanlık Yapma */
+        .plyr--audio .plyr__controls {
+            background: transparent !important;
+            color: #fff !important;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2><iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%3Atracks%3A2285978861%3Fsecret_token%3Ds-g676rDhVU3L&color=%232c2c2c&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/zahid-184668668" title="zahid" target="_blank" style="color: #cccccc; text-decoration: none;">zahid</a> · <a href="https://soundcloud.com/zahid-184668668/uykulu/s-g676rDhVU3L" title="uykulu" target="_blank" style="color: #cccccc; text-decoration: none;">uykulu</a></div></h2>
+
+    <div class="player-container">
+        <h2>System_Audio_Node</h2>
         
-        </div>
+        <audio id="player" controls>
+            <source src="https://docs.google.com/uc?export=download&id=1IqiSnzX1FBrigtLSBRNdfcHpnx_FKVLk" type="audio/mp4" />
+        </audio>
+    </div>
+
+    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+    <script>
+        const player = new Plyr('#player', {
+            tooltips: { controls: true, seek: true }
+        });
+    </script>
 </body>
 </html>
