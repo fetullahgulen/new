@@ -2,101 +2,17 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zahid | Audio Stream</title>
+    <title>Zahid | Audio System</title>
     <style>
-        :root {
-            --bg: #0a0a0b;
-            --accent: #00ff88;
-            --panel: #141417;
-        }
-
-        body {
-            background-color: var(--bg);
-            color: white;
-            font-family: 'JetBrains Mono', 'Fira Code', monospace;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            letter-spacing: 1px;
-        }
-
-        .audio-node {
-            background: var(--panel);
-            padding: 30px;
-            border-radius: 4px;
-            border-left: 4px solid var(--accent);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            width: 350px;
-            position: relative;
-        }
-
-        .header {
-            font-size: 10px;
-            color: var(--accent);
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        h1 {
-            font-size: 16px;
-            margin: 0 0 25px 0;
-            font-weight: 400;
-        }
-
-        /* Standart oynatıcıyı karanlık temaya uydurma */
-        audio {
-            width: 100%;
-            height: 40px;
-            filter: invert(1) hue-rotate(85deg) brightness(1.2);
-            outline: none;
-        }
-
-        .info {
-            margin-top: 15px;
-            font-size: 9px;
-            color: #555;
-            text-align: right;
-        }
-
-        /* Yanıp sönen efekt (Live hissi) */
-        .live-dot {
-            height: 8px;
-            width: 8px;
-            background-color: var(--accent);
-            border-radius: 50%;
-            display: inline-block;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0.3; }
-            100% { opacity: 1; }
-        }
+        body { background: #0a0a0c; color: #00ff88; font-family: monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { border: 1px solid #222; padding: 20px; background: #111; border-radius: 10px; box-shadow: 0 0 20px rgba(0,255,136,0.1); width: 400px; text-align: center; }
+        h2 { font-size: 12px; letter-spacing: 2px; margin-bottom: 20px; opacity: 0.7; }
     </style>
 </head>
 <body>
-
-    <div class="audio-node">
-        <div class="header">
-            <span>System Status: Online</span>
-            <span class="live-dot"></span>
-        </div>
+    <div class="container">
+        <h2><iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%3Atracks%3A2285978861%3Fsecret_token%3Ds-g676rDhVU3L&color=%232c2c2c&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/zahid-184668668" title="zahid" target="_blank" style="color: #cccccc; text-decoration: none;">zahid</a> · <a href="https://soundcloud.com/zahid-184668668/uykulu/s-g676rDhVU3L" title="uykulu" target="_blank" style="color: #cccccc; text-decoration: none;">uykulu</a></div></h2>
         
-        <h1>> PLAYBACK_NODE_01</h1>
-
-        <audio controls preload="metadata">
-            <source src="ses.m4a" type="audio/mp4">
-            Sistem hatası: Ses dosyası yüklenemedi.
-        </audio>
-
-        <div class="info">20MB_M4A_STREAM // zahid.life</div>
-    </div>
-
+        </div>
 </body>
 </html>
