@@ -82,10 +82,17 @@
         #toast { position: fixed; bottom: 30px; background: var(--pink-dark); color: white; padding: 12px 25px; border-radius: 50px; font-size: 13px; display: none; z-index: 15000; }
         .heart { position: fixed; color: var(--pink-main); pointer-events: none; z-index: -1; animation: fly 4s linear; }
         @keyframes fly { from { transform: translateY(100vh); opacity: 1; } to { transform: translateY(-10vh); opacity: 0; } }
+
+        /* Günlük kalpler yan menü için */
+        #daily-hearts { display:flex; flex-direction:column; gap:8px; max-height:300px; overflow-y:auto; margin-left:15px; }
+
+        /* Günlük sayaç üstte */
+        #day-counter-overlay { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); font-weight:600; color:var(--pink-dark); font-size:16px; z-index:11000; background: rgba(255,255,255,0.8); padding:8px 15px; border-radius:25px; box-shadow: var(--shadow); }
     </style>
 </head>
 <body>
 
+    <div id="day-counter-overlay">0 gün ♡</div>
     <div id="toast"></div>
 
     <div id="confirm-modal">
@@ -102,7 +109,7 @@
         <div class="login-box">
             <h3>♡</h3>
             <input type="password" id="pass" placeholder="Şifre...">
-            <button class="btn-primary" onclick="check()"></button>
+            <button class="btn-primary" onclick="check()">Giriş</button>
         </div>
     </div>
 
@@ -110,13 +117,17 @@
         <h2 style="color: var(--pink-dark); margin-bottom:5px;"></h2>
         <p style="font-size:12px; color:var(--pink-main); margin-bottom:20px;">♡</p>
 
-        <div class="tabs">
-            <button class="tab-btn active" onclick="tab('ses', this)">🎵 SESLER</button>
-            <button class="tab-btn" onclick="tab('ss', this)">📸 GÖRSELLER</button>
+        <div style="display:flex; gap:15px; width:100%; justify-content:center; align-items:flex-start;">
+            <div style="flex:1;">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="tab('ses', this)">🎵 SESLER</button>
+                    <button class="tab-btn" onclick="tab('ss', this)">📸 GÖRSELLER</button>
+                </div>
+                <div id="ses-grid" class="area"></div>
+                <div id="ss-grid" class="area" style="display:none;"></div>
+            </div>
+            <div id="daily-hearts"></div>
         </div>
-
-        <div id="ses-grid" class="area"></div>
-        <div id="ss-grid" class="area" style="display:none;"></div>
 
         <div id="admin-panel">
             <p style="font-weight:600; color:var(--pink-dark); margin-bottom:15px; text-align:center;">✨</p>
@@ -131,30 +142,60 @@
     </div>
 
     <script>
-        // FIREBASE CONFIG BURAYA GELECEK
+        // FIREBASE CONFIG
         const firebaseConfig = {
-  apiKey: "AIzaSyBr3pYSUGjFyoLNXz3OS9mluBEriCCxyCw",
-  authDomain: "ses-efcb4.firebaseapp.com",
-  databaseURL: "https://ses-efcb4-default-rtdb.firebaseio.com",
-  projectId: "ses-efcb4",
-  storageBucket: "ses-efcb4.firebasestorage.app",
-  messagingSenderId: "935403740924",
-  appId: "1:935403740924:web:597306db08302cb42bc179",
-  measurementId: "G-SLFGZEEKMK"
-};
-
+          apiKey: "AIzaSyBr3pYSUGjFyoLNXz3OS9mluBEriCCxyCw",
+          authDomain: "ses-efcb4.firebaseapp.com",
+          databaseURL: "https://ses-efcb4-default-rtdb.firebaseio.com",
+          projectId: "ses-efcb4",
+          storageBucket: "ses-efcb4.firebasestorage.app",
+          messagingSenderId: "935403740924",
+          appId: "1:935403740924:web:597306db08302cb42bc179",
+          measurementId: "G-SLFGZEEKMK"
+        };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         
         let isAdmin = false;
         let deleteKey = null;
 
-        // ŞİFRE GİZLEME MANTIĞI (İncele kısmında kelime görünmez)
+        // Günlük sayaç
+        function updateDayCounter() {
+            const startDate = new Date(2026, 1, 20);
+            const today = new Date();
+            const diffTime = today - startDate;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById('day-counter-overlay').innerText = `${diffDays} gün ♡`;
+        }
+        updateDayCounter();
+        setInterval(updateDayCounter, 60 * 1000);
+
+        // Günlük kalpler
+        function loadDailyHearts() {
+            const container = document.getElementById('daily-hearts');
+            container.innerHTML = '';
+            const startDate = new Date(2026, 1, 20);
+            const today = new Date();
+            let diffDays = Math.floor((today - startDate)/(1000*60*60*24));
+
+            for(let i=1; i<=diffDays; i++){
+                const heart = document.createElement('div');
+                heart.innerText = `${i} ♡`;
+                heart.style.background = `hsl(${(i*25)%360}, 80%, 80%)`;
+                heart.style.padding = '8px 12px';
+                heart.style.borderRadius = '25px';
+                heart.style.fontWeight = '600';
+                heart.style.color = 'var(--pink-dark)';
+                heart.style.textAlign = 'center';
+                heart.style.boxShadow = 'var(--shadow)';
+                container.appendChild(heart);
+            }
+        }
+
+        // Şifre kontrolü
         function check() {
             const input = document.getElementById('pass').value.toLowerCase().trim();
-            const b = btoa(input); // Base64'e çevirir
-
-            // bmVoaXI= (nehir) | eWVzYmU= (yesbe)
+            const b = btoa(input);
             if (b === "bmVoaXI=") { 
                 isAdmin = true;
                 loginSuccess();
@@ -171,6 +212,7 @@
             document.getElementById('main-content').style.display = 'flex';
             if(isAdmin) document.getElementById('admin-panel').style.display = 'block';
             load();
+            loadDailyHearts();
             setInterval(heart, 800);
         }
 
@@ -247,9 +289,4 @@
             a.ontimeupdate = () => { s.value = (a.currentTime / a.duration) * 100; document.getElementById('cur-' + k).innerText = format(a.currentTime); };
         }
 
-        function seekAudio(k) { const a = document.getElementById('audio-' + k); const s = document.getElementById('seek-' + k); a.currentTime = (s.value / 100) * a.duration; }
-        function format(sec) { let m = Math.floor(sec / 60); let s = Math.floor(sec % 60); return m + ":" + (s < 10 ? "0" + s : s); }
-        function heart() { const h = document.createElement('div'); h.className = 'heart'; h.innerHTML = '💗'; h.style.left = Math.random() * 100 + 'vw'; h.style.fontSize = (Math.random() * 20 + 15) + 'px'; document.body.appendChild(h); setTimeout(() => h.remove(), 4000); }
-    </script>
-</body>
-</html>
+        function seekAudio(k) { const a = document.getElementById('audio-' + k); const s = document.getElementById('seek-' + k); a.currentTime = (s.value
