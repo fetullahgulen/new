@@ -14,103 +14,67 @@
             --pink-bg: #fff5f8;
             --pink-main: #ff85a2;
             --pink-dark: #f06292;
-            --glass: rgba(255, 255, 255, 0.4);
+            --glass: rgba(255, 255, 255, 0.5);
             --shadow: 0 10px 30px rgba(255, 133, 162, 0.2);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        
         body { 
             background: linear-gradient(135deg, #fff5f8 0%, #ffeef2 100%); 
-            font-family: 'Poppins', sans-serif; 
-            margin: 0; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            min-height: 100vh; 
-            color: #444; 
+            font-family: 'Poppins', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; color: #444; 
         }
 
-        /* 6. Madde: Glassmorphism (Cam Efekti) */
+        /* Glassmorphism */
         .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: var(--shadow);
-            border-radius: 30px;
+            background: var(--glass); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: var(--shadow); border-radius: 30px;
         }
 
-        /* 1. Madde: Sayaç Tasarımı */
-        .counter-box {
-            margin: 20px 0;
-            padding: 20px;
-            text-align: center;
-            width: 85%;
-            max-width: 400px;
-        }
-        #days-count { font-size: 32px; font-weight: 700; color: var(--pink-dark); display: block; }
+        /* Sayaç */
+        .counter-box { margin: 20px 0; padding: 20px; text-align: center; width: 85%; max-width: 400px; }
+        #days-count { font-size: 35px; font-weight: 700; color: var(--pink-dark); display: block; }
         .counter-box span { font-size: 14px; color: var(--pink-main); font-weight: 500; }
 
         input, select, textarea {
             width: 100%; padding: 15px; margin: 10px 0; border-radius: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.8); background: rgba(255, 255, 255, 0.5); 
-            font-family: 'Poppins', sans-serif; font-size: 15px; transition: 0.3s;
+            border: 2px solid white; background: rgba(255, 255, 255, 0.8); font-family: 'Poppins', sans-serif; font-size: 15px;
         }
 
         .btn-primary {
-            background: var(--pink-main); color: white; border: none;
-            padding: 16px; width: 100%; border-radius: 20px; font-weight: 600; font-size: 16px; cursor: pointer;
-            transition: 0.3s;
+            background: var(--pink-main); color: white; border: none; padding: 16px; width: 100%; border-radius: 20px; font-weight: 600; cursor: pointer; transition: 0.3s;
         }
-        .btn-primary:active { transform: scale(0.95); }
 
-        #login-overlay {
-            position: fixed; inset: 0; background: var(--pink-bg);
-            display: flex; justify-content: center; align-items: center; z-index: 10000;
-        }
+        #login-overlay { position: fixed; inset: 0; background: var(--pink-bg); display: flex; justify-content: center; align-items: center; z-index: 10000; }
         .login-box { padding: 40px 30px; text-align: center; width: 85%; max-width: 350px; }
 
         #main-content { display: none; width: 100%; padding: 20px; flex-direction: column; align-items: center; }
-        
         .tabs { position: sticky; top: 15px; z-index: 100; display: flex; gap: 8px; margin-bottom: 30px; }
-        .tab-btn {
-            background: white; border: none; padding: 12px 18px;
-            border-radius: 50px; font-weight: 600; color: var(--pink-dark);
-            box-shadow: var(--shadow); cursor: pointer; font-size: 12px;
-        }
+        .tab-btn { background: white; border: none; padding: 12px 20px; border-radius: 50px; font-weight: 600; color: var(--pink-dark); box-shadow: var(--shadow); cursor: pointer; }
         .tab-btn.active { background: var(--pink-main); color: white; }
 
-        /* 3. Madde: Görsel Hover Efekti */
-        .card { padding: 15px; position: relative; transition: 0.3s; margin-bottom: 10px; }
-        .card img { 
-            width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 20px; 
-            cursor: pointer; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .card img:hover { transform: scale(1.03); }
+        /* Kartlar ve Görsel Efektler */
+        .card { padding: 15px; position: relative; transition: 0.3s; margin-bottom: 10px; width: 100%; }
+        .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 20px; cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .card img:hover { transform: scale(1.05); }
 
-        /* 2. Madde: Günlük Alanı */
+        /* Günlük */
         #not-grid { width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 15px; }
-        .not-card { padding: 20px; border-left: 5px solid var(--pink-main); }
+        .not-card { padding: 20px; border-left: 5px solid var(--pink-main); text-align: left; }
         .not-date { font-size: 11px; color: var(--pink-main); margin-bottom: 5px; }
 
         #ses-grid { display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 500px; }
         #ss-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; max-width: 800px; }
 
-        .custom-player { background: rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 15px; }
+        .custom-player { background: rgba(255, 255, 255, 0.4); border-radius: 20px; padding: 15px; }
         .player-controls { display: flex; align-items: center; gap: 15px; }
-        .play-btn {
-            background: var(--pink-main); border: none; border-radius: 50%;
-            width: 45px; height: 45px; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer;
-        }
+        .play-btn { background: var(--pink-main); border: none; border-radius: 50%; width: 45px; height: 45px; color: white; cursor: pointer; }
         .seek-slider { flex: 1; -webkit-appearance: none; background: #ddd; height: 6px; border-radius: 10px; }
         .seek-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--pink-main); border-radius: 50%; border: 3px solid white; }
 
         #admin-panel { display: none; width: 95%; max-width: 450px; padding: 25px; margin-top: 30px; margin-bottom: 50px; }
-        
         #toast { position: fixed; bottom: 30px; background: var(--pink-dark); color: white; padding: 12px 25px; border-radius: 50px; font-size: 13px; display: none; z-index: 15000; }
         .heart { position: fixed; color: var(--pink-main); pointer-events: none; z-index: -1; animation: fly 4s linear; }
-        @keyframes fly { from { transform: translateY(100vh) rotate(0deg); opacity: 1; } to { transform: translateY(-10vh) rotate(360deg); opacity: 0; } }
+        @keyframes fly { from { transform: translateY(100vh); opacity: 1; } to { transform: translateY(-10vh); opacity: 0; } }
     </style>
 </head>
 <body>
@@ -121,7 +85,7 @@
         <div class="login-box glass-card">
             <h3 style="color:var(--pink-dark)">Hoş geldin ♡</h3>
             <input type="password" id="pass" placeholder="Şifre...">
-            <button class="btn-primary" onclick="handleLogin()">Giriş Yap</button>
+            <button class="btn-primary" onclick="login()">Giriş Yap</button>
         </div>
     </div>
 
@@ -142,20 +106,21 @@
         <div id="not-grid" class="area" style="display:none;"></div>
 
         <div id="admin-panel" class="glass-card">
-            <p style="font-weight:600; color:var(--pink-dark); text-align:center;">✨ Yönetim Paneli</p>
+            <p style="font-weight:600; color:var(--pink-dark); text-align:center;">✨ Yönetim</p>
             <select id="type" onchange="toggleInputs()">
                 <option value="ses">Ses Dosyası 🎵</option>
                 <option value="ss">Resim / SS 📸</option>
                 <option value="not">Günlük Notu 📝</option>
             </select>
-            <input type="text" id="name" placeholder="Başlık / Not Özeti">
-            <input type="text" id="link" placeholder="Discord Linki (Not için boş bırak)">
-            <textarea id="note-text" placeholder="Günlük notunu buraya yaz..." style="display:none; height:100px;"></textarea>
+            <input type="text" id="name" placeholder="Başlık / Özet">
+            <input type="text" id="link" placeholder="Discord Linki">
+            <textarea id="note-text" placeholder="Notunuzu yazın..." style="display:none; height:100px;"></textarea>
             <button class="btn-primary" onclick="save()">Kaydet ♡</button>
         </div>
     </div>
 
     <script>
+        // Firebase Yapılandırması
         const firebaseConfig = {
             apiKey: "AIzaSyBr3pYSUGjFyoLNXz3OS9mluBEriCCxyCw",
             authDomain: "ses-efcb4.firebaseapp.com",
@@ -168,49 +133,43 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-        
         let isAdmin = false;
 
-        // 7. Madde: SHA-256 Şifreleme (Zahid Style Security)
-        async function handleLogin() {
-    const input = document.getElementById('pass').value.toLowerCase().trim();
-    
-    // Tarayıcı güvenliği kontrolü (file:// protokolünde crypto.subtle çalışmaz)
-    if (!window.isSecureContext && window.location.protocol !== 'http:') {
-        // Eğer yerelde (file://) test ediyorsan basit kontrolle geçiş yapalım:
-        if (input === "nehir") { isAdmin = true; loginSuccess(); return; }
-        if (input === "yesbe") { isAdmin = false; loginSuccess(); return; }
-    }
+        // Basit ve Garantili Giriş Fonksiyonu
+        function login() {
+            const pass = document.getElementById('pass').value.toLowerCase().trim();
+            
+            // Güvenlik: Base64 veya Hash yerine şimdilik direkt kontrol (sorunsuz çalışması için)
+            if (pass === "nehir") {
+                isAdmin = true;
+                loginSuccess();
+            } else if (pass === "yesbe") {
+                isAdmin = false;
+                loginSuccess();
+            } else {
+                showToast("Şifre hatalı! ♡");
+            }
+        }
 
-    const hash = await sha256(input);
+        function loginSuccess() {
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            if(isAdmin) document.getElementById('admin-panel').style.display = 'block';
+            updateCounter();
+            load();
+            setInterval(heart, 800);
+        }
 
-    // Düzeltilmiş Doğru Hash'ler:
-    const adminHash = "649c9a33282bad435a66662f0fa6521f57c19801c6d8f684a755d7b27af887a5"; // nehir
-    const userHash = "e947824068d3665fff98119a86ab31a264cd2ce2490cb8783ff4524a7e2008e3"; // yesbe
-
-    if (hash === adminHash) { 
-        isAdmin = true; 
-        loginSuccess(); 
-    } else if (hash === userHash) { 
-        isAdmin = false; 
-        loginSuccess(); 
-    } else { 
-        showToast("Şifre hatalı! ♡"); 
-    }
-}
-
-
-        // 1. Madde: Sayaç Fonksiyonu
         function updateCounter() {
-            const startDate = new Date("2024-01-01"); // BURAYI DEĞİŞTİR: Tanışma tarihiniz
+            const startDate = new Date("2024-01-01"); // TANIŞMA TARİHİNİZİ BURAYA YAZ
             const diff = new Date() - startDate;
             document.getElementById('days-count').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
         }
 
         function toggleInputs() {
-            const type = document.getElementById('type').value;
-            document.getElementById('link').style.display = type === 'not' ? 'none' : 'block';
-            document.getElementById('note-text').style.display = type === 'not' ? 'block' : 'none';
+            const t = document.getElementById('type').value;
+            document.getElementById('link').style.display = t === 'not' ? 'none' : 'block';
+            document.getElementById('note-text').style.display = t === 'not' ? 'block' : 'none';
         }
 
         function save() {
@@ -231,73 +190,45 @@
 
         function load() {
             db.ref('arsiv').on('value', s => {
-                const ses = document.getElementById('ses-grid'); 
-                const ss = document.getElementById('ss-grid');
-                const not = document.getElementById('not-grid');
-                ses.innerHTML = ""; ss.innerHTML = ""; not.innerHTML = "";
+                const grids = { ses: document.getElementById('ses-grid'), ss: document.getElementById('ss-grid'), not: document.getElementById('not-grid') };
+                Object.values(grids).forEach(g => g.innerHTML = "");
 
                 s.forEach(c => {
                     const d = c.val(); const k = c.key;
-                    const del = isAdmin ? `<button onclick="deleteItem('${k}')" style="position:absolute; top:10px; right:10px; background:var(--pink-dark); color:white; border:none; width:25px; height:25px; border-radius:50%; font-size:10px; cursor:pointer; z-index:10;">X</button>` : '';
+                    const del = isAdmin ? `<button onclick="deleteItem('${k}')" style="position:absolute; top:10px; right:10px; background:var(--pink-dark); color:white; border:none; width:25px; height:25px; border-radius:50%; cursor:pointer; z-index:10;">X</button>` : '';
 
                     if(d.t === 'ss') {
                         const div = document.createElement('div'); div.className = 'card glass-card';
-                        div.innerHTML = `${del}<img src="${d.l}" onclick="window.open('${d.l}')"><p style="margin-top:10px; font-size:12px; font-weight:600; text-align:center; color:var(--pink-dark)">${d.n}</p>`;
-                        ss.appendChild(div);
+                        div.innerHTML = `${del}<img src="${d.l}" onclick="window.open('${d.l}')"><p style="margin-top:10px; font-weight:600; text-align:center; color:var(--pink-dark)">${d.n}</p>`;
+                        grids.ss.appendChild(div);
                     } else if(d.t === 'not') {
                         const div = document.createElement('div'); div.className = 'not-card glass-card';
-                        div.innerHTML = `${del}<div class="not-date">${d.date}</div><div style="font-weight:600; color:var(--pink-dark); margin-bottom:5px;">${d.n}</div><div style="font-size:13px; line-height:1.5;">${d.txt}</div>`;
-                        not.appendChild(div);
+                        div.innerHTML = `${del}<div class="not-date">${d.date}</div><div style="font-weight:600; color:var(--pink-dark);">${d.n}</div><div style="font-size:13px; margin-top:5px;">${d.txt}</div>`;
+                        grids.not.appendChild(div);
                     } else {
                         const div = document.createElement('div'); div.className = 'card glass-card';
-                        div.innerHTML = `${del}<p style="font-weight:600; color:var(--pink-dark); margin-bottom:10px;">♡ ${d.n}</p><div class="custom-player"><audio id="audio-${k}" src="${d.l}"></audio><div class="player-controls"><button class="play-btn" onclick="togglePlay('${k}', '${d.n}')">▶</button><input type="range" class="seek-slider" id="seek-${k}" value="0" step="0.1" oninput="seekAudio('${k}')"></div></div>`;
-                        ses.appendChild(div);
-                        setupAudio(k);
+                        div.innerHTML = `${del}<p style="font-weight:600; color:var(--pink-dark); margin-bottom:10px;">♡ ${d.n}</p><div class="custom-player"><audio id="audio-${k}" src="${d.l}"></audio><div class="player-controls"><button class="play-btn" onclick="toggleP('${k}')">▶</button><input type="range" class="seek-slider" id="seek-${k}" value="0" step="0.1" oninput="seekA('${k}')"></div></div>`;
+                        grids.ses.appendChild(div);
+                        setupA(k);
                     }
                 });
             });
         }
 
-        function deleteItem(k) { if(confirm("Silmek istediğine emin misin? ♡")) db.ref('arsiv').child(k).remove(); }
-
-        function togglePlay(k, name) {
-            const a = document.getElementById('audio-' + k);
-            if(a.paused) { a.play(); } else { a.pause(); }
-        }
-
-        function setupAudio(k) {
-            const a = document.getElementById('audio-' + k);
-            const s = document.getElementById('seek-' + k);
-            a.ontimeupdate = () => { s.value = (a.currentTime / a.duration) * 100; };
-        }
-
-        function seekAudio(k) { 
-            const a = document.getElementById('audio-' + k); 
-            const s = document.getElementById('seek-' + k); 
-            a.currentTime = (s.value / 100) * a.duration; 
-        }
-
+        function toggleP(k) { const a = document.getElementById('audio-'+k); a.paused ? a.play() : a.pause(); }
+        function setupA(k) { const a = document.getElementById('audio-'+k); const s = document.getElementById('seek-'+k); a.ontimeupdate = () => s.value = (a.currentTime / a.duration) * 100; }
+        function seekA(k) { const a = document.getElementById('audio-'+k); const s = document.getElementById('seek-'+k); a.currentTime = (s.value / 100) * a.duration; }
+        function deleteItem(k) { if(confirm("Silinsin mi? ♡")) db.ref('arsiv').child(k).remove(); }
+        
         function tab(id, b) {
             document.querySelectorAll('.area').forEach(a => a.style.display = 'none');
             document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-            document.getElementById(id + '-grid').style.display = (id === 'ss' ? 'grid' : 'flex');
+            document.getElementById(id + '-grid').style.display = id === 'ss' ? 'grid' : 'flex';
             b.classList.add('active');
         }
 
-        function showToast(m) {
-            const t = document.getElementById('toast');
-            t.innerText = m; t.style.display = 'block';
-            setTimeout(() => t.style.display = 'none', 3000);
-        }
-
-        function heart() {
-            const h = document.createElement('div'); h.className = 'heart';
-            h.innerHTML = ['💗','💖','💝','🌸'][Math.floor(Math.random()*4)];
-            h.style.left = Math.random() * 100 + 'vw';
-            h.style.fontSize = (Math.random() * 20 + 15) + 'px';
-            document.body.appendChild(h);
-            setTimeout(() => h.remove(), 4000);
-        }
+        function showToast(m) { const t = document.getElementById('toast'); t.innerText = m; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 3000); }
+        function heart() { const h = document.createElement('div'); h.className = 'heart'; h.innerHTML = '💗'; h.style.left = Math.random() * 100 + 'vw'; h.style.fontSize = (Math.random() * 20 + 15) + 'px'; document.body.appendChild(h); setTimeout(() => h.remove(), 4000); }
     </script>
 </body>
 </html>
