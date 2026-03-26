@@ -172,35 +172,33 @@
         let isAdmin = false;
 
         // 7. Madde: SHA-256 Şifreleme (Zahid Style Security)
-        async function sha256(message) {
-            const msgBuffer = new TextEncoder().encode(message);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        }
-
         async function handleLogin() {
-            const input = document.getElementById('pass').value.toLowerCase().trim();
-            const hash = await sha256(input);
+    const input = document.getElementById('pass').value.toLowerCase().trim();
+    
+    // Tarayıcı güvenliği kontrolü (file:// protokolünde crypto.subtle çalışmaz)
+    if (!window.isSecureContext && window.location.protocol !== 'http:') {
+        // Eğer yerelde (file://) test ediyorsan basit kontrolle geçiş yapalım:
+        if (input === "nehir") { isAdmin = true; loginSuccess(); return; }
+        if (input === "yesbe") { isAdmin = false; loginSuccess(); return; }
+    }
 
-            // Örnek Hashler (Zahid şifresini buraya göre güncelleyebilirsin)
-            // 'nehir' sha256: 76f6f966289... (Örnek olarak aşağıdakileri kullanıyoruz)
-            const adminHash = "76f6f9662896f60020479155694f31c03380ed55a90f845a73e163467e21245e"; // nehir
-            const userHash = "1537a77e8a93910c03f4f1345d2f6233ca441b80c2f8295988e0018865365851"; // yesbe
+    const hash = await sha256(input);
 
-            if (hash === adminHash) { isAdmin = true; loginSuccess(); }
-            else if (hash === userHash) { isAdmin = false; loginSuccess(); }
-            else { showToast("Şifre hatalı! ♡"); }
-        }
+    // Düzeltilmiş Doğru Hash'ler:
+    const adminHash = "649c9a33282bad435a66662f0fa6521f57c19801c6d8f684a755d7b27af887a5"; // nehir
+    const userHash = "e947824068d3665fff98119a86ab31a264cd2ce2490cb8783ff4524a7e2008e3"; // yesbe
 
-        function loginSuccess() {
-            document.getElementById('login-overlay').style.display = 'none';
-            document.getElementById('main-content').style.display = 'flex';
-            if(isAdmin) document.getElementById('admin-panel').style.display = 'block';
-            updateCounter();
-            load();
-            setInterval(heart, 800);
-        }
+    if (hash === adminHash) { 
+        isAdmin = true; 
+        loginSuccess(); 
+    } else if (hash === userHash) { 
+        isAdmin = false; 
+        loginSuccess(); 
+    } else { 
+        showToast("Şifre hatalı! ♡"); 
+    }
+}
+
 
         // 1. Madde: Sayaç Fonksiyonu
         function updateCounter() {
